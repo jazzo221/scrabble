@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block metatags %}
+        <meta charset="UTF-8" />
+        <title>{% block title %}Scrabble{% endblock %}</title>
+        <meta name="author" content="ATENA - PERSONAL CONSULTING s.r.o." />
+        <meta name="copyright" content="ATENA - PERSONAL CONSULTING s.r.o." />
+    {% endblock %}
+
+    {% block stylesheets %}
+        {% stylesheets '@bootstrap_css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/style.css') }}">
+    {% endblock %}
+</head>
+<body>
+{% spaceless %}
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block javascripts %}{% endblock %}
+{% endspaceless %}
+</body>
+</html>
