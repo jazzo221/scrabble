@@ -1,0 +1,44 @@
+{% extends '@App/layout/layout.html.twig' %}
+
+{% block content %}
+    {{ form(form) }}
+{% endblock %}
+
+{% block page_level_javascripts %}
+
+    <script type="text/javascript">
+        // keep track of how many fields have been rendered
+        var inputCount = {{ form.letters|length }};
+
+        jQuery(document).ready(function() {
+            jQuery('#letter_bag_add').click(function(e) {
+                e.preventDefault();
+
+                var list = jQuery('#letter_bag_letters');
+
+                // grab the prototype template
+                var newWidget = list.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__/g, inputCount);
+                inputCount++;
+
+                // create a new list element and add it to the list
+                var newEl = jQuery(newWidget);
+                newEl.appendTo(list);
+
+            });
+
+            jQuery('#letter_bag_remove').click(function(e) {
+                e.preventDefault();
+
+                var list = jQuery('#letter_bag_letters');
+
+                inputCount--;
+
+                list.children().last().remove()
+            });
+        })
+    </script>
+{% endblock %}

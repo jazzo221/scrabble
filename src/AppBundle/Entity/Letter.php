@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Letter
@@ -25,6 +26,8 @@ class Letter
      * @var string
      *
      * @ORM\Column(name="letter", type="string", length=1, unique=true)
+     *
+     * @Assert\Length(min=1,max=1)
      */
     private $letter;
 

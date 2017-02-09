@@ -21,7 +21,19 @@
         {% block content %}{% endblock %}
     </main>
 
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+        {% block global_plugin_javascripts %}
+        {% javascripts '@bootstrap_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        {% endblock %}
+        {% block page_level_javascripts %}{% endblock %}
+    {% endblock %}
 {% endspaceless %}
 </body>
 </html>
