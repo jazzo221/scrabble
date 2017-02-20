@@ -17,7 +17,19 @@
 </head>
 <body>
 {% spaceless %}
+
+    {% block navbar %}
+        {% include '@App/layout/pieces/navbar/navbar.html.twig' %}
+    {% endblock %}
+
     <main class="container">
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ label }}">
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block content %}{% endblock %}
     </main>
 

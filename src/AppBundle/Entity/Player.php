@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlayerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Player
 {
@@ -102,6 +103,15 @@ class Player
     {
         return $this->createdAt;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * Constructor
      */
@@ -143,4 +153,11 @@ class Player
     {
         return $this->games;
     }
+
+    function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

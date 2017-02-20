@@ -8,30 +8,33 @@ namespace AppBundle\Form\Type;
 
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LetterBagType extends AbstractType
+class ScoresheetType extends AbstractType
 {
-
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('letters',CollectionType::class,[
-            'entry_type'=>LetterType::class,
-            'allow_add'=>true,
-            'allow_delete'=>true
-        ]);
+        $builder
+            ->add('player')
+            ->add('points')
+            ->add('turn',NumberType::class,[
+                'attr'=>[
+                    'readonly'=>true
+                ]
+            ])
+            ->add('word');
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'=>'AppBundle\Model\Bag\Bag'
+            'data_class'=>'AppBundle\Entity\Scoresheet'
         ]);
     }
+
 
 
 }

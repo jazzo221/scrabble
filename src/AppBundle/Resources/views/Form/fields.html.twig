@@ -1,0 +1,54 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block collection_widget %}
+    {{ parent(form()) }}
+    {#{{ dump(allow_add) }}#}
+    {% if allow_add %}
+
+        <div class="btn-group">
+            <div class="btn btn-success" id="{{ form.vars.id }}_add">Add</div>
+            {% if allow_delete %}
+                <div class="btn btn-danger" id="{{ form.vars.id }}_delete">Delete</div>
+            {% endif %}
+        </div>
+
+        <script>
+            // keep track of how many fields have been rendered
+            var inputCount = {{ form|length }};
+
+            document.addEventListener('DOMContentLoaded',function(){
+                jQuery('#{{ form.vars.id }}_add').click(function(e) {
+                    e.preventDefault();
+
+                    var list = jQuery('#{{ form.vars.id }}');
+
+                    // grab the prototype template
+                    var newWidget = list.attr('data-prototype');
+                    // replace the "__name__" used in the id and name of the prototype
+                    // with a number that's unique to your emails
+                    // end name attribute looks like name="contact[emails][2]"
+                    newWidget = newWidget.replace(/__name__/g, inputCount);
+                    inputCount++;
+
+                    // create a new list element and add it to the list
+                    var newEl = jQuery(newWidget);
+                    newEl.appendTo(list);
+
+                });
+
+
+                {% if allow_delete %}
+                jQuery('#{{ form.vars.id }}_delete').click(function(e) {
+                    e.preventDefault();
+
+                    var list = jQuery('#{{ form.vars.id }}');
+
+                    inputCount--;
+
+                    list.children().last().remove()
+                });
+                {% endif %}
+            });
+        </script>
+    {% endif %}
+{% endblock %}

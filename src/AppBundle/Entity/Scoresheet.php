@@ -24,7 +24,7 @@ class Scoresheet
     /**
      * @var string
      *
-     * @ORM\Column(name="word", type="string", length=255)
+     * @ORM\Column(name="word", type="string", length=255, nullable=true)
      */
     private $word;
 

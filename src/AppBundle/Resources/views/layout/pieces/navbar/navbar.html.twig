@@ -1,0 +1,28 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="collapsed navbar-toggle" data-toggle="collapse"
+                    data-target="#main-navbar-collapse" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a href="#" class="navbar-brand">Scrabble</a></div>
+        <div class="collapse navbar-collapse" id="main-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if app.request.get('_route') == 'homepage' %}active{% endif %}">
+                    <a href="{{ path('homepage') }}">Home</a>
+                </li>
+                <li class="{% if app.request.get('_route') == 'app_letter_index' %}active{% endif %}">
+                    <a href="{{ path('app_letter_index') }}">Konfigurácia</a>
+                </li>
+                <li class="{% if app.request.get('_route') == 'app_scoresheet_index' %}active{% endif %}">
+                    <a href="{{ path('app_scoresheet_index') }}">Partiár</a>
+                </li>
+                <li class="{% if app.request.get('_route') == 'app_game_index' %}active{% endif %}">
+                    <a href="{{ path('app_game_index') }}">Hra</a>
+                </li>
+                <li class="{% if app.request.get('_route') == 'app_player_index' %}active{% endif %}">
+                    <a href="{{ path('app_player_index') }}">Hráči</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

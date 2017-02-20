@@ -1,29 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Jakub
- */
 
 namespace AppBundle\Controller;
 
-
-use AppBundle\Form\Type\ScoresheetType;
+use AppBundle\Form\Type\GameType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class ScoresheetController
+ * Class GameController
  * @package AppBundle\Controller
  *
- * @Route("/scoresheet")
+ * @Route("/game")
  */
-class ScoresheetController extends Controller
+class GameController extends Controller
 {
-
     /**
-     * @param Request $request
+     * @return array
      *
      * @Route("/")
      * @Template()
@@ -31,7 +25,7 @@ class ScoresheetController extends Controller
     public function indexAction(Request $request)
     {
 
-        $form = $this->createForm(ScoresheetType::class);
+        $form = $this->createForm(GameType::class);
 
         return [
             'form'=>$form->createView()
