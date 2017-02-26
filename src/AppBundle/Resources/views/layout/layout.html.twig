@@ -2,10 +2,10 @@
 <html>
 <head>
     {% block metatags %}
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8"/>
         <title>{% block title %}Scrabble{% endblock %}</title>
-        <meta name="author" content="ATENA - PERSONAL CONSULTING s.r.o." />
-        <meta name="copyright" content="ATENA - PERSONAL CONSULTING s.r.o." />
+        <meta name="author" content="ATENA - PERSONAL CONSULTING s.r.o."/>
+        <meta name="copyright" content="ATENA - PERSONAL CONSULTING s.r.o."/>
     {% endblock %}
 
     {% block stylesheets %}
@@ -38,13 +38,15 @@
             src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
             crossorigin="anonymous"></script>
-        {% block global_plugin_javascripts %}
-        {% javascripts '@bootstrap_js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        {% endblock %}
-        {% block page_level_javascripts %}{% endblock %}
+    {% block global_plugin_javascripts %}
+    {% javascripts '@bootstrap_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@symfony_collection_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% endblock %}
+    {% block page_level_javascripts %}{% endblock %}
     {% endblock %}
 {% endspaceless %}
 </body>

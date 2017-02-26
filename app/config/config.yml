@@ -103,3 +103,11 @@ assetic:
                 inputs:
                     - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff
                 output: "fonts/glyphicons-halflings-regular.woff"
+            symfony_collection_js:
+                inputs:
+                    - %kernel.root_dir%/../vendor/ninsuo/symfony-collection/jquery.collection.js
+
+sensio_framework_extra:
+    request:
+        converters: true
+        auto_convert: true

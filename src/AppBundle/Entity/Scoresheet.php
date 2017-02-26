@@ -45,7 +45,8 @@ class Scoresheet
     /**
      * @var Game
      *
-     * @ORM\OneToOne(targetEntity="Game", mappedBy="scoresheet")
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="scoresheets")
+     * @ORM\JoinColumn()
      */
     private $game;
 

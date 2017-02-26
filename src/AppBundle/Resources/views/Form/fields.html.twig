@@ -1,8 +1,25 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
+{#{% block collection_widget %}#}
+    {#{% spaceless %}#}
+        {#{% if prototype is defined %}#}
+            {#{% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}#}
+            {#{% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}#}
+        {#{% endif %}#}
+        {#{% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}#}
+        {#{% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}#}
+        {#{% set attr = attr|merge({'data-name-prefix': full_name}) %}#}
+        {#{{ block('form_widget') }}#}
+        {#<script>#}
+            {#document.addEventListener('DOMContentLoaded',function(){#}
+                {#$('#{{ form.vars.id }}').collection();#}
+            {#});#}
+        {#</script>#}
+    {#{% endspaceless %}#}
+{#{% endblock collection_widget %}#}
+
 {% block collection_widget %}
     {{ parent(form()) }}
-    {#{{ dump(allow_add) }}#}
     {% if allow_add %}
 
         <div class="btn-group">
@@ -24,6 +41,8 @@
 
                     // grab the prototype template
                     var newWidget = list.attr('data-prototype');
+
+                    newWidget = newWidget.replace(/__name__label__/g, '{{ form.vars.label }}');
                     // replace the "__name__" used in the id and name of the prototype
                     // with a number that's unique to your emails
                     // end name attribute looks like name="contact[emails][2]"
@@ -51,4 +70,18 @@
             });
         </script>
     {% endif %}
+{% endblock %}
+
+{% block _game_scoresheets_widget %}
+    {{ block('collection_widget') }}
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            jQuery('#{{ form.vars.id }}_add').click(function(e) {
+                e.preventDefault();
+
+                console.debug($('#{{ form.vars.id }}').find('turn:last'), inputCount);
+                $('#{{ form.vars.id }}').find('.turn:last').val(inputCount);
+            })
+        })
+    </script>
 {% endblock %}

@@ -1,5 +1,51 @@
 {% extends '@App/layout/layout.html.twig' %}
 
 {% block content %}
-    {{ form(form) }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group " role="group">
+                <a href="{{ path('app_game_new') }}" class="btn btn-sm btn-success">
+                    Nová hra
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Hráči</th>
+                    <th>Dátum</th>
+                    <th>Akcie</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for game in games %}
+                    <tr>
+                        <td>{{ game.id }}</td>
+                        <td>
+                            <ul class="list-unstyled">
+                                {% for player in game.players %}
+                                    <li>
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        {{ player.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>{{ game.date|date('d.m.Y') }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" href="{{ path('app_game_edit',{'game':game.id}) }}">
+                                Upraviť
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}

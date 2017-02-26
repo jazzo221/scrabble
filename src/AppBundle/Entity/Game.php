@@ -40,9 +40,9 @@ class Game
     /**
      * @var Scoresheet
      *
-     * @ORM\OneToOne(targetEntity="Scoresheet", inversedBy="game")
+     * @ORM\OneToMany(targetEntity="Scoresheet", mappedBy="game", cascade={"persist"})
      */
-    private $scoresheet;
+    private $scoresheets;
 
     /**
      * Game constructor.
@@ -50,6 +50,7 @@ class Game
     public function __construct()
     {
         $this->players = new ArrayCollection();
+        $this->scoresheets = new ArrayCollection();
     }
 
 
@@ -121,27 +122,39 @@ class Game
         return $this->players;
     }
 
+
     /**
-     * Set scoresheet
+     * Add scoresheet
      *
      * @param \AppBundle\Entity\Scoresheet $scoresheet
      *
      * @return Game
      */
-    public function setScoresheet(\AppBundle\Entity\Scoresheet $scoresheet = null)
+    public function addScoresheet(\AppBundle\Entity\Scoresheet $scoresheet)
     {
-        $this->scoresheet = $scoresheet;
+        $scoresheet->setGame($this);
+        $this->scoresheets[] = $scoresheet;
 
         return $this;
     }
 
     /**
-     * Get scoresheet
+     * Remove scoresheet
      *
-     * @return \AppBundle\Entity\Scoresheet
+     * @param \AppBundle\Entity\Scoresheet $scoresheet
      */
-    public function getScoresheet()
+    public function removeScoresheet(\AppBundle\Entity\Scoresheet $scoresheet)
     {
-        return $this->scoresheet;
+        $this->scoresheets->removeElement($scoresheet);
+    }
+
+    /**
+     * Get scoresheets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getScoresheets()
+    {
+        return $this->scoresheets;
     }
 }
