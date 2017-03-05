@@ -7,7 +7,7 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Form\Type\ScoresheetType;
+use AppBundle\Form\Type\TurnType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,7 +31,7 @@ class ScoresheetController extends Controller
     public function indexAction(Request $request)
     {
 
-        $form = $this->createForm(ScoresheetType::class);
+        $form = $this->createForm(TurnType::class);
 
         return [
             'form'=>$form->createView()

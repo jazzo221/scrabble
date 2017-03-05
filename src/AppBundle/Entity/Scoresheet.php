@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="scoresheet")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ScoresheetRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Scoresheet
 {
@@ -21,41 +22,42 @@ class Scoresheet
      */
     private $id;
 
+
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="word", type="string", length=255, nullable=true)
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $word;
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="points", type="integer")
+     * @ORM\Column(name="total_points", type="integer")
      */
-    private $points;
+    private $totalPoints;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="turn", type="integer")
+     * @ORM\OneToMany(targetEntity="Turn", mappedBy="scoresheet")
      */
-    private $turn;
+    private $turns;
 
     /**
      * @var Game
      *
-     * @ORM\ManyToOne(targetEntity="Game", inversedBy="scoresheets")
+     * @ORM\OneToOne(targetEntity="Game", inversedBy="scoresheet")
      * @ORM\JoinColumn()
      */
     private $game;
-
-    /**
-     * @var Player
-     *
-     * @ORM\ManyToOne(targetEntity="Player")
-     */
-    private $player;
 
 
     /**
@@ -66,78 +68,6 @@ class Scoresheet
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set word
-     *
-     * @param string $word
-     *
-     * @return Scoresheet
-     */
-    public function setWord($word)
-    {
-        $this->word = $word;
-
-        return $this;
-    }
-
-    /**
-     * Get word
-     *
-     * @return string
-     */
-    public function getWord()
-    {
-        return $this->word;
-    }
-
-    /**
-     * Set points
-     *
-     * @param integer $points
-     *
-     * @return Scoresheet
-     */
-    public function setPoints($points)
-    {
-        $this->points = $points;
-
-        return $this;
-    }
-
-    /**
-     * Get points
-     *
-     * @return int
-     */
-    public function getPoints()
-    {
-        return $this->points;
-    }
-
-    /**
-     * Set turn
-     *
-     * @param integer $turn
-     *
-     * @return Scoresheet
-     */
-    public function setTurn($turn)
-    {
-        $this->turn = $turn;
-
-        return $this;
-    }
-
-    /**
-     * Get turn
-     *
-     * @return int
-     */
-    public function getTurn()
-    {
-        return $this->turn;
     }
 
     /**
@@ -165,26 +95,135 @@ class Scoresheet
     }
 
     /**
-     * Set player
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->turns = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add turn
      *
-     * @param \AppBundle\Entity\Player $player
+     * @param \AppBundle\Entity\Turn $turn
      *
      * @return Scoresheet
      */
-    public function setPlayer(\AppBundle\Entity\Player $player = null)
+    public function addTurn(\AppBundle\Entity\Turn $turn)
     {
-        $this->player = $player;
+        $turn->setScoresheet($this);
+        $this->turns[] = $turn;
 
         return $this;
     }
 
     /**
-     * Get player
+     * Remove turn
      *
-     * @return \AppBundle\Entity\Player
+     * @param \AppBundle\Entity\Turn $turn
      */
-    public function getPlayer()
+    public function removeTurn(\AppBundle\Entity\Turn $turn)
     {
-        return $this->player;
+        $this->turns->removeElement($turn);
+    }
+
+    /**
+     * Get turns
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTurns()
+    {
+        return $this->turns;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Scoresheet
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Scoresheet
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set totalPoints
+     *
+     * @param integer $totalPoints
+     *
+     * @return Scoresheet
+     */
+    public function setTotalPoints($totalPoints)
+    {
+        $this->totalPoints = $totalPoints;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPoints
+     *
+     * @return integer
+     */
+    public function getTotalPoints()
+    {
+        return $this->totalPoints;
     }
 }

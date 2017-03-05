@@ -1,25 +1,5 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
-{#{% block collection_widget %}#}
-    {#{% spaceless %}#}
-        {#{% if prototype is defined %}#}
-            {#{% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}#}
-            {#{% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}#}
-        {#{% endif %}#}
-        {#{% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}#}
-        {#{% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}#}
-        {#{% set attr = attr|merge({'data-name-prefix': full_name}) %}#}
-        {#{{ block('form_widget') }}#}
-        {#<script>#}
-            {#document.addEventListener('DOMContentLoaded',function(){#}
-                {#$('#{{ form.vars.id }}').collection();#}
-            {#});#}
-        {#</script>#}
-    {#{% endspaceless %}#}
-{#{% endblock collection_widget %}#}
-
-{#{% block let #}
-
 {% block collection_widget %}
     {{ parent(form()) }}
     {% if allow_add %}
@@ -74,7 +54,7 @@
     {% endif %}
 {% endblock %}
 
-{% block _game_scoresheets_widget %}
+{% block _game_scoresheet_turns_widget %}
     {{ block('collection_widget') }}
     <script>
         document.addEventListener('DOMContentLoaded',function(){
