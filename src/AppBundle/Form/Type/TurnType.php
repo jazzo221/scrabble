@@ -20,18 +20,18 @@ class TurnType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('player',EntityType::class,[
-                'class'=>'AppBundle\Entity\Player',
-                'choices'=> $options['players']
-            ])
-            ->add('points')
             ->add('turn',NumberType::class,[
                 'attr'=>[
                     'readonly'=>true,
                     'class'=>'turn'
                 ]
             ])
-            ->add('word');
+            ->add('player',EntityType::class,[
+                'class'=>'AppBundle\Entity\Player',
+                'choices'=> $options['players']
+            ])
+            ->add('word')
+            ->add('points');
     }
 
 
