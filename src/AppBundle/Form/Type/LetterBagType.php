@@ -22,7 +22,10 @@ class LetterBagType extends AbstractType
         $builder->add('letters',CollectionType::class,[
             'entry_type'=>LetterType::class,
             'allow_add'=>true,
-            'allow_delete'=>true
+            'allow_delete'=>true,
+            'attr'=>[
+                'class'=>'form-inline'
+            ]
         ]);
     }
 
