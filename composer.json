@@ -50,6 +50,9 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
+        ],
+        "compile":[
+            "bin/console doctrine:schema:update --force"
         ]
     },
     "extra": {
