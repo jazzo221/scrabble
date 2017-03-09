@@ -4,10 +4,17 @@ imports:
 doctrine:
   dbal:
       url: "%env(CLEARDB_DATABASE_URL)%"
-#  orm:
-#      metadata_cache_driver: apc
-#      result_cache_driver: apc
-#      query_cache_driver: apc
+  orm:
+      auto_generate_proxy_classes: false
+
+twig:
+  debug: false
+  strict_variables: false
+
+assetic:
+  use_controller: false
+  debug: false
+
 
 monolog:
     handlers:
