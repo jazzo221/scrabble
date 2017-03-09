@@ -53,7 +53,8 @@
         ],
         "compile":[
             "chmod +x bin/console",
-            "bin/console doctrine:schema:update --force"
+            "bin/console doctrine:schema:update --force",
+            "bin/console assetic:dump --env=prod --no-debug"
         ]
     },
     "extra": {
