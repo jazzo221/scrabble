@@ -14,6 +14,8 @@ twig:
 assetic:
   use_controller: false
   debug: false
+  bundles:
+    - AppBundle
 
 
 monolog:
