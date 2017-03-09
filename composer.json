@@ -52,7 +52,7 @@
             "@symfony-scripts"
         ],
         "compile":[
-            "chmod -777 bin/console",
+            "chmod +x bin/console",
             "bin/console doctrine:schema:update --force"
         ]
     },
