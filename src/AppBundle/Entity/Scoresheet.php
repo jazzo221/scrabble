@@ -47,7 +47,7 @@ class Scoresheet
     /**
      * @var int
      *
-     * @ORM\OneToMany(targetEntity="Turn", mappedBy="scoresheet")
+     * @ORM\OneToMany(targetEntity="Turn", mappedBy="scoresheet", cascade={"persist"})
      */
     private $turns;
 
