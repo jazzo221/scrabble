@@ -13,9 +13,6 @@
                 <li class="{% if app.request.get('_route') == 'app_letter_index' %}active{% endif %}">
                     <a href="{{ path('app_letter_index') }}">Konfigurácia</a>
                 </li>
-                <li class="{% if app.request.get('_route') == 'app_scoresheet_index' %}active{% endif %}">
-                    <a href="{{ path('app_scoresheet_index') }}">Partiár</a>
-                </li>
                 <li class="{% if app.request.get('_route') == 'app_game_index' %}active{% endif %}">
                     <a href="{{ path('app_game_index') }}">Hra</a>
                 </li>
