@@ -25,7 +25,7 @@ class Letter
     /**
      * @var string
      *
-     * @ORM\Column(name="letter", type="string", length=1, unique=true)
+     * @ORM\Column(name="letter", type="string", length=1, unique=true, options={"collation":"utf8_bin"})
      *
      * @Assert\Length(min=1,max=1)
      */
