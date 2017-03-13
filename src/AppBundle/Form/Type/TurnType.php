@@ -20,7 +20,7 @@ class TurnType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('turn',NumberType::class,[
+            ->add('number',NumberType::class,[
                 'attr'=>[
                     'readonly'=>true,
                     'class'=>'turn'

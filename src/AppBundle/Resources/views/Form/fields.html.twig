@@ -61,7 +61,7 @@
             jQuery('#{{ form.vars.id }}_add').click(function(e) {
                 e.preventDefault();
 
-                console.debug($('#{{ form.vars.id }}').find('turn:last'), inputCount);
+                console.debug($('#{{ form.vars.id }}').find('.turn:last'), inputCount);
                 $('#{{ form.vars.id }}').find('.turn:last').val(inputCount);
             })
         })
