@@ -1,5 +1,36 @@
 {% extends '@App/layout/layout.html.twig' %}
 
 {%  block content %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group " role="group">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Meno</th>
+                        <th>Dátum vytvorenia</th>
+                        <th>Počet hier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                        <tr>
+                            <td>{{ player.id }}</td>
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.createdAt|date('d.m.Y') }}</td>
+                            <td>{{ player.games|length }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h3>Pridať hráča</h3>
     {{ form(form) }}
 {% endblock %}

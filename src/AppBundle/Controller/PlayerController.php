@@ -35,7 +35,8 @@ class PlayerController extends BaseController
         }
 
         return [
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'players'=>$this->getDoctrine()->getRepository('AppBundle:Player')->findAll()
         ];
     }
 }
