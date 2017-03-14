@@ -32,5 +32,13 @@ table.board {
     background-color: lightblue;
 }
 
+.form-inline .control-label{
+    margin-right: 5px;
+}
+
+.form-inline .form-group{
+    margin: 0 5px;
+}
+
 
 
