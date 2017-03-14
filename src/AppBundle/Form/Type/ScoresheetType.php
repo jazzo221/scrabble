@@ -22,7 +22,6 @@ class ScoresheetType extends AbstractType
 //        var_dump($data);
 //        exit;
         $builder
-            ->add('totalPoints')
             ->add('turns',CollectionType::class,[
             'allow_add'=>true,
             'allow_delete'=>true,

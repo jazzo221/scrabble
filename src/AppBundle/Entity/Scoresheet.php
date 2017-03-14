@@ -37,12 +37,6 @@ class Scoresheet
      */
     private $updatedAt;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="total_points", type="integer")
-     */
-    private $totalPoints;
 
     /**
      * @var int
@@ -203,27 +197,4 @@ class Scoresheet
         return $this->updatedAt;
     }
 
-    /**
-     * Set totalPoints
-     *
-     * @param integer $totalPoints
-     *
-     * @return Scoresheet
-     */
-    public function setTotalPoints($totalPoints)
-    {
-        $this->totalPoints = $totalPoints;
-
-        return $this;
-    }
-
-    /**
-     * Get totalPoints
-     *
-     * @return integer
-     */
-    public function getTotalPoints()
-    {
-        return $this->totalPoints;
-    }
 }

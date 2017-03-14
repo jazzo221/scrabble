@@ -36,10 +36,17 @@
                         </td>
                         <td>{{ game.date|date('d.m.Y') }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href="{{ path('app_game_edit',{'game':game.id}) }}">
-                                Upraviť
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </a>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-sm" href="{{ path('app_game_edit',{'game':game.id}) }}">
+                                    Upraviť
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a class="btn btn-success btn-sm"
+                                   href="{% if game.scoresheet %}{{ path('app_scoresheet_edit',{'game':game.id,'scoresheet':game.scoresheet.id}) }}{% else %}{{ path('app_scoresheet_new',{'game':game.id}) }}{% endif %}">
+                                    Partiar
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

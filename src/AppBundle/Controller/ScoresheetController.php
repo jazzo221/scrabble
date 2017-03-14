@@ -7,8 +7,9 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Form\Type\TurnType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Game;
+use AppBundle\Entity\Scoresheet;
+use AppBundle\Form\Type\ScoresheetType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,23 +18,64 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  * Class ScoresheetController
  * @package AppBundle\Controller
  *
- * @Route("/scoresheet")
+ * @Route("/game/{game}/scoresheet")
  */
-class ScoresheetController extends Controller
+class ScoresheetController extends BaseController
 {
 
     /**
      * @param Request $request
      *
      * @Route("/")
-     * @Template()
+     * @Template("@App/Scoresheet/form.html.twig")
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function indexAction(Request $request)
+    public function newAction(Request $request, Game $game)
     {
 
-        $form = $this->createForm(TurnType::class);
+        $scoresheet = new Scoresheet();
+        $scoresheet->setGame($game);
+        $form = $this->createForm(ScoresheetType::class,$scoresheet);
+        $this->addSubmit($form);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($scoresheet);
+            $manager->flush();
+
+            $this->addFlash('success','Partiár bol úspešne uložený');
+
+            return $this->redirectToRoute('app_scoresheet_edit',[
+                'game'=>$game->getId(),
+                'scoresheet'=>$scoresheet->getId()
+            ]);
+        }
 
         return [
+            'form'=>$form->createView()
+        ];
+    }
+
+    /**
+     * @Route("/{scoresheet}/edit")
+     * @Template("@App/Scoresheet/form.html.twig")
+     */
+    public function editAction(Request $request,Scoresheet $scoresheet){
+
+        $form = $this->createForm(ScoresheetType::class,$scoresheet);
+        $this->addSubmit($form);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($scoresheet);
+            $manager->flush();
+
+            $this->addFlash('success','Partiár bol úspešne uložený');
+        }
+
+        return[
             'form'=>$form->createView()
         ];
     }
