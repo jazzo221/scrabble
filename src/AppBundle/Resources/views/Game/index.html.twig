@@ -36,9 +36,9 @@
                         </td>
                         <td>{{ game.date|date('d.m.Y') }}</td>
                         <td>
-                            <div class="btn-group">
+                            <div class="btn-group btn-group-sm">
                                 <a class="btn btn-primary btn-sm" href="{{ path('app_game_edit',{'game':game.id}) }}">
-                                    Upraviť
+                                    Upraviť hru
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </a>
                                 <a class="btn btn-success btn-sm"
@@ -46,6 +46,12 @@
                                     Partiar
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </a>
+                                {% if game.scoresheet %}
+                                    <a class="btn btn-sm btn-default" href="{{ path('app_game_reconstruction',{'game':game.id}) }}">
+                                        Spustiť rekonštrukciu
+                                        <span class="glyphicon glyphicon-play"></span>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

@@ -85,4 +85,12 @@ class GameController extends BaseController
             'form'=>$form->createView()
         ];
     }
+
+    /**
+     * @Route("/{game}/reconstruction")
+     * @Template()
+     */
+    public function reconstructionAction(Game $game){
+
+    }
 }
