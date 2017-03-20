@@ -43,7 +43,7 @@ class Possibility
     /**
      * @var Possibility[]
      */
-    private $possibilities;
+    private $possibilities = [];
 
     /**
      * @return Turn
@@ -151,6 +151,39 @@ class Possibility
     {
         $this->possibilities = $possibilities;
         return $this;
+    }
+
+    /**
+     * @param $possibility
+     * @return $this
+     */
+    public function addPossibility(Possibility $possibility){
+        $this->possibilities[] = $possibility;
+        return $this;
+    }
+
+    /**
+     * @param Turn $turn
+     * @return Possibility[]
+     */
+    public function getRootPossibilitiesForTurn(Turn $turn){
+
+        if($this->turn->getNumber() === $turn->getNumber() -1){
+            return $this->getPossibilities();
+        }else{
+            $possibilities = [];
+            foreach ($this->getPossibilities() as $possibility){
+                $sub = $possibility->getRootPossibilitiesForTurn($turn);
+                array_merge($sub);
+            }
+
+            return $possibilities;
+        }
+    }
+
+    public function isValid()
+    {
+        //todo validate
     }
 
 

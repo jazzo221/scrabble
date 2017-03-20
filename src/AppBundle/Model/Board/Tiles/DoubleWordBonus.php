@@ -19,6 +19,7 @@ class DoubleWordBonus extends AbstractTile
 
     public function render()
     {
-        return "<td class='tile double-word-bonus'>2x Word</td>";
+        $content = $this->hasLetter() ? $this->letter : "2x Word";
+        return "<td class='tile double-word-bonus'>".$content."</td>";
     }
 }

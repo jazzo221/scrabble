@@ -24,6 +24,6 @@ class Simple extends AbstractTile
      */
     public function render()
     {
-        return "<td class='tile simple'></td>";
+        return "<td class='tile simple'>".$this->letter."</td>";
     }
 }

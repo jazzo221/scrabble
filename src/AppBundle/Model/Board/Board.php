@@ -9,6 +9,7 @@
 namespace AppBundle\Model\Board;
 
 
+use AppBundle\Entity\Letter;
 use AppBundle\Model\Board\Tiles\AbstractTile;
 use AppBundle\Model\Board\Tiles\DoubleLetterBonus;
 use AppBundle\Model\Board\Tiles\DoubleWordBonus;
@@ -49,6 +50,19 @@ class Board implements RenderableInterface
             [new Simple(),new DoubleWordBonus(), new Simple(), new Simple(), new Simple(), new TripleLetterBonus(), new Simple(), new Simple(), new Simple(), new TripleLetterBonus(), new Simple(), new Simple(), new Simple(), new DoubleWordBonus(), new Simple()],
             [new TripleWordBonus(),new Simple(), new Simple(), new DoubleLetterBonus(), new Simple(), new Simple(), new Simple(), new TripleWordBonus(), new Simple(), new Simple(), new Simple(), new DoubleLetterBonus(), new Simple(), new Simple(), new TripleWordBonus()],
         ];
+    }
+
+    public function placeLetter(Letter $letter, $row, $column){
+        $tile = $this->board[$row][$column];
+
+        if(!$tile instanceof AbstractTile){
+            throw new \Exception('Tile at row: '.$row.' column: '.$column.' does not exists');
+        }
+
+        if($tile->hasLetter())
+            throw new \Exception('Tile at row: '.$row.' column: '.$column.' already has letter '.$tile->getLetter()->getLetter());
+
+        $tile->setLetter($letter);
     }
 
 

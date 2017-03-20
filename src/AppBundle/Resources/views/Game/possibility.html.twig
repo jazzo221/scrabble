@@ -1,0 +1,4 @@
+{{ possibility.board.render|raw }}
+{% for child in possibility.possibilities %}
+    {% include '@App/Game/possibility.html.twig' with {'possibility':child} %}
+{% endfor %}

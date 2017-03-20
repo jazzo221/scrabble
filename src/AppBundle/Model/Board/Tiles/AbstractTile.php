@@ -31,6 +31,14 @@ abstract class AbstractTile implements RenderableInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasLetter()
+    {
+        return !!$this->letter;
+    }
+
+    /**
      * @param Letter $letter
      * @param Word $word
      * @return int

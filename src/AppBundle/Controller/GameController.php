@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Game;
 use AppBundle\Form\Type\GameType;
+use AppBundle\Model\Bag\Bag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,5 +93,13 @@ class GameController extends BaseController
      */
     public function reconstructionAction(Game $game){
 
+        $letters = $this->getDoctrine()->getRepository('AppBundle:Letter')->findAll();
+        $bag = new Bag();
+        $bag->setLetters($letters);
+        $possibility = $this->get('app.reconstruction')->reconstruct($game,$bag);
+
+        return [
+            'possibility'=>$possibility
+        ];
     }
 }

@@ -17,6 +17,17 @@ class Bag
      */
     private $letters;
 
+    function __clone()
+    {
+        $clones = [];
+
+        foreach ($this->letters as $letter){
+            $clones[] = clone $letter;
+        }
+        $this->letters = $clones;
+    }
+
+
     /**
      * @return Letter[]
      */
@@ -31,6 +42,29 @@ class Bag
     public function setLetters($letters)
     {
         $this->letters = $letters;
+    }
+
+    /**
+     * @param $char
+     * @return Letter
+     * @throws \Exception
+     */
+    public function getLetter($char){
+        /** @var Letter $letter */
+        foreach ($this->letters as $letter){
+            if(strtoupper($letter->getLetter()) === strtoupper($char)){
+                $found = $letter;
+                $letterCount = $found->getCount();
+                if($letterCount === 0){
+                    throw new \Exception("No more '".$char."' in bag");
+                }
+
+                $letter->setCount($letterCount - 1);
+                return $found;
+            }
+        }
+
+        throw new \Exception('Letter '.$char.' not found in bag');
     }
 
 

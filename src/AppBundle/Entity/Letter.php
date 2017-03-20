@@ -127,5 +127,12 @@ class Letter
     {
         return $this->count;
     }
+
+    function __toString()
+    {
+        return $this->letter;
+    }
+
+
 }
 
