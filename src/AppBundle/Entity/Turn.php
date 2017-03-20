@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Turn
@@ -32,9 +33,9 @@ class Turn
     /**
      * @var string
      *
-     * @ORM\Column(name="word", type="string", length=255)
+     * @ORM\Column(name="word", type="string", length=255, nullable=true)
      */
-    private $word;
+    private $word = null;
 
     /**
      * @var int
@@ -43,6 +44,25 @@ class Turn
      */
     private $points;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="blank", type="boolean", options={"default":false})
+     */
+    private $blank = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="blank_char", type="string", length=1, nullable=true)
+     *
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 1
+     * )
+     *
+     */
+    private $blankChar;
 
     /**
      * @var Player
@@ -190,5 +210,53 @@ class Turn
     public function getScoresheet()
     {
         return $this->scoresheet;
+    }
+
+    /**
+     * Set blank
+     *
+     * @param boolean $blank
+     *
+     * @return Turn
+     */
+    public function setBlank($blank)
+    {
+        $this->blank = $blank;
+
+        return $this;
+    }
+
+    /**
+     * Get blank
+     *
+     * @return boolean
+     */
+    public function isBlank()
+    {
+        return $this->blank;
+    }
+
+    /**
+     * Set blakChar
+     *
+     * @param string $blankChar
+     *
+     * @return Turn
+     */
+    public function setBlankChar($blankChar)
+    {
+        $this->blankChar = $blankChar;
+
+        return $this;
+    }
+
+    /**
+     * Get blankChar
+     *
+     * @return string
+     */
+    public function getBlankChar()
+    {
+        return $this->blankChar;
     }
 }

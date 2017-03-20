@@ -87,7 +87,7 @@ class GameController extends BaseController
     }
 
     /**
-     * @Route("/{game}/reconstruction")
+     * @Route("/{game}/Reconstruction")
      * @Template()
      */
     public function reconstructionAction(Game $game){

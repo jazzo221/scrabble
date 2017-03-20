@@ -6,7 +6,7 @@
 
 namespace AppBundle\Form\Type;
 
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -31,7 +31,11 @@ class TurnType extends AbstractType
                 'choices'=> $options['players']
             ])
             ->add('word')
-            ->add('points');
+            ->add('points')
+            ->add('blank',null,[
+                'label'=>'Žolík'
+            ])
+            ->add('blankChar');
     }
 
 
