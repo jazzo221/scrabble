@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Model\Board\Tiles\AbstractTile;
+use AppBundle\Model\RenderableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="letter")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LetterRepository")
  */
-class Letter
+class Letter implements RenderableInterface
 {
     /**
      * @var int
@@ -44,6 +46,11 @@ class Letter
      * @ORM\Column(name="count", type="integer")
      */
     private $count;
+
+    /**
+     * @var AbstractTile
+     */
+    private $tile;
 
 
     /**
@@ -128,11 +135,38 @@ class Letter
         return $this->count;
     }
 
+    /**
+     * @return AbstractTile
+     */
+    public function getTile()
+    {
+        return $this->tile;
+    }
+
+    /**
+     * @param AbstractTile $tile
+     * @return Letter
+     */
+    public function setTile($tile)
+    {
+        $this->tile = $tile;
+        return $this;
+    }
+
+
+
     function __toString()
     {
         return $this->letter;
     }
 
 
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return $this->getLetter().'<sub>'.$this->getPoints().'</sub>';
+    }
 }
 

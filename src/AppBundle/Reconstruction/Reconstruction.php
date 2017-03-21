@@ -70,19 +70,14 @@ class Reconstruction
 
                 $board = new Board();
                 $bag = clone $this->bag;
-
-                foreach (str_split($word) as $letter){
-                    $bagLetter = $bag->getLetter($letter);
-                    $board->placeLetter($bagLetter,$startTileRow,$column++);
-
-                }
-
                 $possibility = new Possibility();
                 $possibility
+                    ->setLetterBag($bag)
                     ->setTurn($turn)
                     ->setBoard($board);
                 ;
 
+                $possibility->placeMainWord($word,$startTileRow,$column,true);
                 $this->possibility->addPossibility($possibility);
             }
 

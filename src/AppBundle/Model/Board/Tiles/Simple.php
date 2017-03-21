@@ -11,10 +11,9 @@ class Simple extends AbstractTile
 
     /**
      * @param Letter $letter
-     * @param Word $word
      * @return int
      */
-    public function getScore(Letter $letter, Word $word)
+    public function getScore(Letter $letter)
     {
         return $letter->getPoints();
     }
@@ -24,6 +23,7 @@ class Simple extends AbstractTile
      */
     public function render()
     {
-        return "<td class='tile simple'>".$this->letter."</td>";
+        $content = !is_null($this->letter) ? $this->letter->render() : null;
+        return "<td class='tile simple'>".$content."</td>";
     }
 }

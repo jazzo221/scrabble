@@ -10,17 +10,16 @@ class DoubleLetterBonus extends AbstractTile
 
     /**
      * @param Letter $letter
-     * @param Word $word
      * @return int
      */
-    public function getScore(Letter $letter, Word $word)
+    public function getScore(Letter $letter)
     {
         return $letter->getPoints()*2;
     }
 
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter : "2x Letter";
+        $content = $this->hasLetter() ? $this->letter->render() : "2x Letter";
 
         return "<td class='tile double-letter-bonus'>".$content."</td>";
     }

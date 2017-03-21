@@ -28,7 +28,7 @@ class Turn
      *
      * @ORM\Column(name="number", type="integer", nullable=false)
      */
-    private $number;
+    private $number = 0;
 
     /**
      * @var string
@@ -42,7 +42,7 @@ class Turn
      *
      * @ORM\Column(name="points", type="integer")
      */
-    private $points;
+    private $points = 0;
 
     /**
      * @var boolean

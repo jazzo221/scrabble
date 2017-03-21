@@ -27,6 +27,7 @@ abstract class AbstractTile implements RenderableInterface
      */
     public function setLetter($letter)
     {
+        $letter->setTile($this);
         $this->letter = $letter;
     }
 
@@ -43,5 +44,5 @@ abstract class AbstractTile implements RenderableInterface
      * @param Word $word
      * @return int
      */
-    public abstract function getScore(Letter $letter, Word $word);
+    public abstract function getScore(Letter $letter);
 }

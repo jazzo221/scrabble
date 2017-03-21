@@ -60,7 +60,7 @@ class Bag
                 }
 
                 $letter->setCount($letterCount - 1);
-                return $found;
+                return clone $found;
             }
         }
 

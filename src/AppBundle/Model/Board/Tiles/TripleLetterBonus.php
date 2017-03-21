@@ -11,10 +11,9 @@ class TripleLetterBonus extends AbstractTile
 
     /**
      * @param Letter $letter
-     * @param Word $word
      * @return int
      */
-    public function getScore(Letter $letter, Word $word)
+    public function getScore(Letter $letter)
     {
         return $letter->getPoints()*3;
     }
@@ -24,7 +23,7 @@ class TripleLetterBonus extends AbstractTile
      */
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter : "3x Letter";
+        $content = $this->hasLetter() ? $this->letter->render() : "3x Letter";
         return "<td class='tile triple-letter-bonus'>".$content."</td>";
     }
 }

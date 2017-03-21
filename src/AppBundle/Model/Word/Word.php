@@ -10,6 +10,7 @@ namespace AppBundle\Model\Word;
 
 
 use AppBundle\Entity\Letter;
+use AppBundle\Model\Board\Tiles\AbstractWordBonus;
 
 class Word
 {
@@ -29,14 +30,7 @@ class Word
      */
     public function __construct(array $letters)
     {
-        $this->letters = $letters;
-
-        $points = 0;
-        foreach ($letters as $letter){
-            $points += $letter->getPoints();
-        }
-
-        $this->setCleanPoints($points);
+        $this->setLetters($letters);
     }
 
     /**
@@ -53,6 +47,7 @@ class Word
     public function setLetters($letters)
     {
         $this->letters = $letters;
+        $this->computePoints();
     }
 
     /**
@@ -64,15 +59,6 @@ class Word
     }
 
     /**
-     * @param int $cleanPoints
-     */
-    public function setCleanPoints($cleanPoints)
-    {
-        $this->cleanPoints = $cleanPoints;
-        $this->actualPoints = $cleanPoints;
-    }
-
-    /**
      * @return int
      */
     public function getActualPoints()
@@ -80,15 +66,33 @@ class Word
         return $this->actualPoints;
     }
 
-    /**
-     * @param int $actualPoints
-     */
-    public function setActualPoints($actualPoints)
+    private function computePoints()
     {
-        $this->actualPoints = $actualPoints;
+
+        foreach ($this->letters as $letter){
+            $this->cleanPoints += $letter->getPoints();
+            $this->actualPoints += $letter->getTile()->getScore($letter);
+        }
+
+        foreach ($this->letters as $letter){
+            $tile = $letter->getTile();
+            if ($tile instanceof AbstractWordBonus){
+                $this->actualPoints = $tile->getScoreMultiplied($this);
+            }
+        }
+
+
     }
 
+    function __toString()
+    {
+        $string = '';
+        foreach ($this->letters as $letter){
+            $string .= $letter->getLetter();
+        }
 
+        return $string;
+    }
 
 
 }

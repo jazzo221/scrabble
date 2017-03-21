@@ -17,9 +17,15 @@ use AppBundle\Model\Board\Tiles\Simple;
 use AppBundle\Model\Board\Tiles\TripleLetterBonus;
 use AppBundle\Model\Board\Tiles\TripleWordBonus;
 use AppBundle\Model\RenderableInterface;
+use AppBundle\Model\Word\Word;
 
 class Board implements RenderableInterface
 {
+
+    /**
+     * @var Word
+     */
+    private $words;
 
     /**
      * @var array[][]
@@ -63,6 +69,15 @@ class Board implements RenderableInterface
             throw new \Exception('Tile at row: '.$row.' column: '.$column.' already has letter '.$tile->getLetter()->getLetter());
 
         $tile->setLetter($letter);
+    }
+
+    /**
+     * @param $row
+     * @param $column
+     * @return AbstractTile
+     */
+    public function getTile($row, $column){
+        return $this->board[$row][$column];
     }
 
 
