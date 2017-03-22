@@ -27,20 +27,16 @@ class Reconstruction
      */
     private $bag;
 
-    public function __construct()
-    {
-
-        $this->possibility = new Possibility();
-        $this->possibility->setBoard(new Board());
-        $zeroTurn = new Turn();
-        $zeroTurn->setNumber(0);
-        $this->possibility->setTurn($zeroTurn);
-    }
 
 
     public function reconstruct(Game $game, Bag $bag){
         $scoresheet = $game->getScoresheet();
         $this->bag = $bag;
+        $zeroTurn = new Turn();
+        $zeroTurn
+            ->setPoints(0)
+            ->setNumber(0);
+        $this->possibility = new Possibility($zeroTurn,new Board(),$bag);
 
         if(!$scoresheet instanceof Scoresheet){
             throw new \BadMethodCallException("Game has to have scoresheet to reconstruct");
@@ -70,17 +66,24 @@ class Reconstruction
 
                 $board = new Board();
                 $bag = clone $this->bag;
-                $possibility = new Possibility();
-                $possibility
-                    ->setLetterBag($bag)
-                    ->setTurn($turn)
-                    ->setBoard($board);
-                ;
+                $possibility = new Possibility($turn,$board,$bag);
 
                 $possibility->placeMainWord($word,$startTileRow,$column,true);
                 $this->possibility->addPossibility($possibility);
             }
 
+        }else{
+            foreach ($possibilities as $possibility){
+                $availableTiles = $possibility->getBoard()->getAvailableTiles();
+                foreach ($availableTiles as $availableTile){
+                    $word = $turn->getWord();
+                    $wordLength = strlen($word);
+
+                    $subPossibility = Possibility::createFromParent($possibility);
+                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),true);
+                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),false);
+                }
+            }
         }
     }
 

@@ -11,7 +11,6 @@ use AppBundle\Entity\Letter;
 use AppBundle\Entity\Turn;
 use AppBundle\Model\Bag\Bag;
 use AppBundle\Model\Board\Board;
-use AppBundle\Model\Board\Tiles\AbstractTile;
 use AppBundle\Model\Word\Word;
 
 class Possibility
@@ -61,6 +60,25 @@ class Possibility
      * @var Possibility[]
      */
     private $possibilities = [];
+
+    /**
+     * Possibility constructor.
+     * @param Turn $turn
+     * @param Board $board
+     * @param Bag $letterBag
+     */
+    public function __construct(Turn $turn, Board $board, Bag $letterBag)
+    {
+        $this->turn = $turn;
+        $this->board = $board;
+        $this->letterBag = $letterBag;
+    }
+
+    static function createFromParent(Possibility $possibility){
+        $new = new Possibility($possibility->getTurn(),$possibility->getBoard(),$possibility->getLetterBag());
+        $new->setParent($possibility);
+        return $new;
+    }
 
     /**
      * @return Turn
@@ -192,15 +210,16 @@ class Possibility
      * @param Turn $turn
      * @return Possibility[]
      */
-    public function getRootPossibilitiesForTurn(Turn $turn){
+    public function getRootPossibilitiesForTurn(Turn $turn, $possibilities = []){
 
         if($this->turn->getNumber() === $turn->getNumber() -1 && $this->isValid()){
-            return $this->getPossibilities();
+//            var_dump($this);
+            return [$this];
         }else{
-            $possibilities = [];
+
             foreach ($this->getPossibilities() as $possibility){
                 $sub = $possibility->getRootPossibilitiesForTurn($turn);
-                array_merge($sub);
+                $possibilities = array_merge($possibilities,$sub);
             }
 
             return $possibilities;
@@ -251,11 +270,9 @@ class Possibility
 
         $this->mainWord = new Word($letters);
         $this->points += $this->mainWord->getActualPoints();
+        //todo check for other created words
     }
 
-    private function checkNewWords($row,$column,$horizontal){
-
-    }
 
     /**
      * @return Word[]

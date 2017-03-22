@@ -18,14 +18,11 @@ use AppBundle\Model\Board\Tiles\TripleLetterBonus;
 use AppBundle\Model\Board\Tiles\TripleWordBonus;
 use AppBundle\Model\RenderableInterface;
 use AppBundle\Model\Word\Word;
+use AppBundle\Reconstruction\AvailableTile;
 
 class Board implements RenderableInterface
 {
 
-    /**
-     * @var Word
-     */
-    private $words;
 
     /**
      * @var array[][]
@@ -58,17 +55,29 @@ class Board implements RenderableInterface
         ];
     }
 
-    public function placeLetter(Letter $letter, $row, $column){
-        $tile = $this->board[$row][$column];
+    /**
+     * Returns tiles where at least one letter has to be placed
+     *
+     * @return AvailableTile[]
+     */
+    public function getAvailableTiles(){
+        $availableTiles = [];
 
-        if(!$tile instanceof AbstractTile){
-            throw new \Exception('Tile at row: '.$row.' column: '.$column.' does not exists');
+        for($row = 0; $row < 15; $row++){
+            for($column = 0; $column < 15; $column++){
+                //check surrounding for tiles and letters
+                if(
+                    (isset($this->board[$row-1][$column]) && $this->getTile($row-1,$column)->hasLetter()) ||
+                    (isset($this->board[$row+1][$column]) && $this->getTile($row+1,$column)->hasLetter()) ||
+                    (isset($this->board[$row][$column-1]) && $this->getTile($row,$column-1)->hasLetter()) ||
+                    (isset($this->board[$row][$column+1]) && $this->getTile($row,$column+1)->hasLetter())
+                ){
+                    $availableTiles[] = new AvailableTile($this->getTile($row,$column),$row,$column);
+                }
+            }
         }
 
-        if($tile->hasLetter())
-            throw new \Exception('Tile at row: '.$row.' column: '.$column.' already has letter '.$tile->getLetter()->getLetter());
-
-        $tile->setLetter($letter);
+        return $availableTiles;
     }
 
     /**
