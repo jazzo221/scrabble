@@ -4,7 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.available_tiles_generator:
+      class:    AppBundle\Reconstruction\AvailableTilesGenerator
     app.reconstruction:
         class:     AppBundle\Reconstruction\Reconstruction
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+        arguments: ["@app.available_tiles_generator"]
 

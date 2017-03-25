@@ -70,15 +70,10 @@ class Possibility
     public function __construct(Turn $turn, Board $board, Bag $letterBag)
     {
         $this->turn = $turn;
-        $this->board = $board;
-        $this->letterBag = $letterBag;
+        $this->board = clone $board;
+        $this->letterBag = clone $letterBag;
     }
 
-    static function createFromParent(Possibility $possibility){
-        $new = new Possibility($possibility->getTurn(),$possibility->getBoard(),$possibility->getLetterBag());
-        $new->setParent($possibility);
-        return $new;
-    }
 
     /**
      * @return Turn
@@ -240,8 +235,8 @@ class Possibility
 
         $currRow = $startRow;
         $currColumn = $startColumn;
-        foreach (str_split($word) as $char){
-            $char = strtoupper($char);
+        foreach (preg_split('//u', $word, null, PREG_SPLIT_NO_EMPTY) as $char){
+            $char = mb_strtoupper($char);
             $tile = $this->board->getTile($currRow,$currColumn);
 
             if($letter = $tile->getLetter()){
@@ -259,6 +254,10 @@ class Possibility
                 $tile->setLetter($letter);
                 $letters[] = $letter;
                 //check if new word was created
+                if($this->board->isConnected($currRow,$currColumn)){
+                    //if we placed word horizontally we could create word only vertically
+                    $this->createdWords[] = $this->getCreatedWord($currRow,$currColumn,!$horizontal);
+                };
             }
 
             if($horizontal){
@@ -270,9 +269,16 @@ class Possibility
 
         $this->mainWord = new Word($letters);
         $this->points += $this->mainWord->getActualPoints();
+        foreach ($this->createdWords as $createdWord){
+            $this->points += $createdWord->getCleanPoints();
+        }
+
+        if(count($this->usedLetters) == 7 ){
+            //bonus for using all letters on hand
+            $this->points += 50;
+        }
         //todo check for other created words
     }
-
 
     /**
      * @return Word[]
@@ -280,6 +286,34 @@ class Possibility
     public function getCreatedWords()
     {
         return $this->createdWords;
+    }
+
+    private function getCreatedWord($row, $column, $horizontal){
+        // find start of this word first
+        do {
+            $tile = $this->getBoard()->getTile($row,$column);
+            if($horizontal){
+                $column--;
+            }else{
+                $row--;
+            }
+
+        }while ($tile->hasLetter());
+
+        $letters = [];
+        //get letters
+        while($tile->hasLetter()){
+            $letters[] = $tile->getLetter();
+
+            if($horizontal){
+                $column++;
+            }else{
+                $row++;
+            }
+            $tile = $this->getBoard()->getTile($row,$column);
+        }
+
+        return new Word($letters);
     }
 
 

@@ -28,16 +28,23 @@ class AvailableTile
     private $column;
 
     /**
+     * @var boolean
+     */
+    private $horizontal;
+
+    /**
      * AvailableTile constructor.
      * @param AbstractTile $tile
      * @param int $row
      * @param int $column
+     * @param boolean $horizontal
      */
-    public function __construct(AbstractTile $tile, $row, $column)
+    public function __construct(AbstractTile $tile, $row, $column, $horizontal)
     {
         $this->tile = $tile;
         $this->row = $row;
         $this->column = $column;
+        $this->horizontal = $horizontal;
     }
 
     /**
@@ -65,6 +72,21 @@ class AvailableTile
     }
 
 
+    /**
+     * @param bool $horizontal
+     */
+    public function setHorizontal($horizontal)
+    {
+        $this->horizontal = $horizontal;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHorizontal()
+    {
+        return $this->horizontal;
+    }
 
 
 }

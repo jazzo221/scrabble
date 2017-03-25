@@ -101,7 +101,7 @@ class Turn
      */
     public function setWord($word)
     {
-        $this->word = $word;
+        $this->word = mb_strtoupper($word);
 
         return $this;
     }

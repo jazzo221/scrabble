@@ -53,7 +53,8 @@ class Bag
         //TODO Letter � not found in bag
         /** @var Letter $letter */
         foreach ($this->letters as $letter){
-            if(strtoupper($letter->getLetter()) === strtoupper($char)){
+//            var_dump($letter)
+            if(mb_stripos($char,$letter->getLetter()) !== false){
                 $found = $letter;
                 $letterCount = $found->getCount();
                 if($letterCount === 0){

@@ -26,7 +26,19 @@ class Reconstruction
      * @var Bag
      */
     private $bag;
+    /**
+     * @var AvailableTilesGenerator
+     */
+    private $availableTilesGenerator;
 
+    /**
+     * Reconstruction constructor.
+     * @param AvailableTilesGenerator $availableTilesGenerator
+     */
+    public function __construct(AvailableTilesGenerator $availableTilesGenerator)
+    {
+        $this->availableTilesGenerator = $availableTilesGenerator;
+    }
 
 
     public function reconstruct(Game $game, Bag $bag){
@@ -54,10 +66,10 @@ class Reconstruction
     private function getPossibilities(Turn $turn){
 
         $possibilities = $this->possibility->getRootPossibilitiesForTurn($turn);
+        $word = $turn->getWord();
 
         //check if turn is first
         if($turn->getNumber() == 1){
-            $word = $turn->getWord();
             $startTileRow = 7;
 
             $wordLength = strlen($word);
@@ -74,14 +86,17 @@ class Reconstruction
 
         }else{
             foreach ($possibilities as $possibility){
-                $availableTiles = $possibility->getBoard()->getAvailableTiles();
+                $availableTiles = $this->availableTilesGenerator->generate($possibility->getBoard(),$word);
+//                var_dump($availableTiles);
+//                exit;
                 foreach ($availableTiles as $availableTile){
-                    $word = $turn->getWord();
-                    $wordLength = strlen($word);
 
-                    $subPossibility = Possibility::createFromParent($possibility);
-                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),true);
-                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),false);
+                    $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
+//                    try{
+
+                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
+                    $possibility->addPossibility($subPossibility);
+//                    }catch (\Exception $e){}
                 }
             }
         }
