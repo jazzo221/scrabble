@@ -1,31 +1,31 @@
-<div class="panel panel-default {% if possibility.valid %}panel-success{% else %}panel-danger{% endif %}">
-    <div class="panel-heading">
-        Ťah {{ possibility.turn.number }}
-        <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
+{% if possibility.valid %}
+    <div class="panel panel-default {% if possibility.valid %}panel-success{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            Ťah {{ possibility.turn.number }}
+            <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
+        </div>
+        {% if possibility.mainWord %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Actual</th>
+                    <th>Expected</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ possibility.mainWord }}</td>
+                    <td>{{ possibility.points }}</td>
+                    <td>{{ possibility.turn.points }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        {{ possibility.board.render|raw }}
     </div>
-    {% if possibility.mainWord %}
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Word</th>
-                <th>Clean</th>
-                <th>Actual</th>
-                <th>Expected</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ possibility.mainWord }}</td>
-                <td>{{ possibility.mainWord.cleanPoints }}</td>
-                <td>{{ possibility.mainWord.actualPoints }}</td>
-                <td>{{ possibility.turn.points }}</td>
-            </tr>
-            </tbody>
-        </table>
-    {% endif %}
-    {{ possibility.board.render|raw }}
-</div>
 
-{% for child in possibility.possibilities %}
-    {% include '@App/Game/possibility.html.twig' with {'possibility':child} %}
-{% endfor %}
+    {% for child in possibility.possibilities %}
+        {% include '@App/Game/possibility.html.twig' with {'possibility':child} %}
+    {% endfor %}
+{% endif %}

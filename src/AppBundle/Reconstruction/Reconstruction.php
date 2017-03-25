@@ -72,7 +72,7 @@ class Reconstruction
         if($turn->getNumber() == 1){
             $startTileRow = 7;
 
-            $wordLength = strlen($word);
+            $wordLength = mb_strlen($word);
             for($i = 1; $i <= $wordLength; $i++){
                 $column = $startTileRow - $wordLength + $i;
 
@@ -92,11 +92,11 @@ class Reconstruction
                 foreach ($availableTiles as $availableTile){
 
                     $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-//                    try{
+                    try{
 
                     $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
                     $possibility->addPossibility($subPossibility);
-//                    }catch (\Exception $e){}
+                    }catch (\Exception $e){}
                 }
             }
         }

@@ -71,12 +71,17 @@ class Word
 
         foreach ($this->letters as $letter){
             $this->cleanPoints += $letter->getPoints();
-            $this->actualPoints += $letter->getTile()->getScore($letter);
+            if(!$letter->getTile()->isUsedBonus()){
+                $this->actualPoints += $letter->getTile()->getScore($letter);
+            }else{
+                $this->actualPoints += $letter->getPoints();
+            }
+
         }
 
         foreach ($this->letters as $letter){
             $tile = $letter->getTile();
-            if ($tile instanceof AbstractWordBonus){
+            if ($tile instanceof AbstractWordBonus && !$tile->isUsedBonus()){
                 $this->actualPoints = $tile->getScoreMultiplied($this);
             }
         }

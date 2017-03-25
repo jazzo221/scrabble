@@ -39,7 +39,7 @@ class Possibility
     /**
      * @var Word[]
      */
-    private $createdWords;
+    private $createdWords = [];
 
     /**
      * @var int
@@ -60,6 +60,11 @@ class Possibility
      * @var Possibility[]
      */
     private $possibilities = [];
+
+    /**
+     * @var array
+     */
+    private $errors = [];
 
     /**
      * Possibility constructor.
@@ -248,15 +253,22 @@ class Possibility
                 $letters[] = $letter;
 
             }else{
-                $letter = $this->letterBag->getLetter($char);
+//                try{
+                    $letter = $this->letterBag->getLetter($char);
+//                } catch (\Exception $exception){
+//                    $this->errors[] = $exception->getMessage();
+//                    continue;
+//                }
+
 
                 $this->usedLetters[] = $letter;
                 $tile->setLetter($letter);
                 $letters[] = $letter;
                 //check if new word was created
-                if($this->board->isConnected($currRow,$currColumn)){
+                $createdWord = $this->getCreatedWord($currRow,$currColumn,!$horizontal);
+                if(!is_null($createdWord)){
                     //if we placed word horizontally we could create word only vertically
-                    $this->createdWords[] = $this->getCreatedWord($currRow,$currColumn,!$horizontal);
+                    $this->createdWords[] = $createdWord;
                 };
             }
 
@@ -270,14 +282,22 @@ class Possibility
         $this->mainWord = new Word($letters);
         $this->points += $this->mainWord->getActualPoints();
         foreach ($this->createdWords as $createdWord){
-            $this->points += $createdWord->getCleanPoints();
+            $this->points += $createdWord->getActualPoints();
         }
-
         if(count($this->usedLetters) == 7 ){
             //bonus for using all letters on hand
             $this->points += 50;
         }
-        //todo check for other created words
+
+        foreach ($this->mainWord->getLetters() as $letter){
+            $letter->getTile()->setUsedBonus(true);
+        }
+
+        foreach ($this->createdWords as $createdWord){
+            foreach ($createdWord->getLetters() as $letter){
+                $letter->getTile()->setUsedBonus(true);
+            }
+        }
     }
 
     /**
@@ -289,29 +309,48 @@ class Possibility
     }
 
     private function getCreatedWord($row, $column, $horizontal){
+
+        if(
+            !((
+                !$horizontal && (
+                    ($row + 1 < 15 && $this->board->getTile($row+1,$column)->hasLetter()) ||
+                    ($row - 1 >= 0 && $this->board->getTile($row-1,$column)->hasLetter())
+                )
+            ) ||
+            (
+                $horizontal && (
+                    ($column + 1 < 15 && $this->board->getTile($row,$column+1)->hasLetter()) ||
+                    ($column - 1 >= 0 && $this->board->getTile($row,$column-1)->hasLetter())
+                )
+            ))
+        ){
+            return null;
+        }
+
         // find start of this word first
         do {
-            $tile = $this->getBoard()->getTile($row,$column);
             if($horizontal){
                 $column--;
             }else{
                 $row--;
             }
-
+            $tile = $this->getBoard()->getTile($row,$column);
         }while ($tile->hasLetter());
 
         $letters = [];
         //get letters
-        while($tile->hasLetter()){
-            $letters[] = $tile->getLetter();
-
+        do{
             if($horizontal){
                 $column++;
             }else{
                 $row++;
             }
             $tile = $this->getBoard()->getTile($row,$column);
-        }
+            if ($tile->hasLetter())
+                $letters[] = $tile->getLetter();
+        }while($tile->hasLetter());
+
+
 
         return new Word($letters);
     }
@@ -322,6 +361,12 @@ class Possibility
      */
     public function isValid()
     {
+
+        if(count($this->errors) > 0)
+        {
+            return false;
+        }
+
         if($this->getTurn()->getPoints() != $this->points){
             return false;
         }

@@ -15,6 +15,13 @@ abstract class AbstractTile implements RenderableInterface
     protected $letter;
 
     /**
+     * Every bonus can be used only once
+     *
+     * @var bool
+     */
+    protected $usedBonus = false;
+
+    /**
      * @return Letter
      */
     public function getLetter()
@@ -37,6 +44,22 @@ abstract class AbstractTile implements RenderableInterface
     public function hasLetter()
     {
         return !!$this->letter;
+    }
+
+    /**
+     * @param $usedBonus
+     * @return $this
+     */
+    public function setUsedBonus($usedBonus){
+        $this->usedBonus = $usedBonus;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUsedBonus(){
+        return $this->usedBonus;
     }
 
     /**
