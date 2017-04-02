@@ -1,9 +1,19 @@
 {% if possibility.valid %}
+<a
+        class="possibility {% if possibility.valid %}text-success valid{% else %}text-warning invalid hidden{% endif %}"
+        data-toggle="collapse"
+        href="#table-{{ possibility.objectHash }}"
+        aria-expanded="false"
+        aria-controls="table-{{ possibility.objectHash }}">
+    Zobraz ťah {{ possibility.turn.number }} možnosť - {% if childNum is defined%}{{ childNum }}{% endif %}
+    <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
+</a>
+<div class="collapse" id="table-{{ possibility.objectHash }}">
     <div class="panel panel-default {% if possibility.valid %}panel-success{% else %}panel-danger{% endif %}">
-        <div class="panel-heading">
-            Ťah {{ possibility.turn.number }}
-            <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
-        </div>
+        {#<div class="panel-heading">#}
+        {#Ťah {{ possibility.turn.number }}#}
+        {#<span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>#}
+        {#</div>#}
         {% if possibility.mainWord %}
             <table class="table">
                 <thead>
@@ -11,6 +21,7 @@
                     <th>Word</th>
                     <th>Actual</th>
                     <th>Expected</th>
+                    <th>Errors</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -18,14 +29,22 @@
                     <td>{{ possibility.mainWord }}</td>
                     <td>{{ possibility.points }}</td>
                     <td>{{ possibility.turn.points }}</td>
+                    <td>{{ possibility.errors|join }}</td>
                 </tr>
                 </tbody>
             </table>
         {% endif %}
         {{ possibility.board.render|raw }}
     </div>
-
-    {% for child in possibility.possibilities %}
-        {% include '@App/Game/possibility.html.twig' with {'possibility':child} %}
-    {% endfor %}
+</div>
+<ul class="list-unstyled" id="{{ possibility.objectHash }}">
+    {% if possibility.possibilities|length > 0 %}
+        <li class="">
+            {% for key, child in possibility.possibilities %}
+                {% include '@App/Game/possibility.html.twig' with {'possibility':child,'childNum':key} %}
+            {% endfor %}
+        </li>
+    {% endif %}
+</ul>
 {% endif %}
+

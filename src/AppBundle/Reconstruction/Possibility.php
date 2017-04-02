@@ -67,6 +67,11 @@ class Possibility
     private $errors = [];
 
     /**
+     * @var boolean
+     */
+    private $valid;
+
+    /**
      * Possibility constructor.
      * @param Turn $turn
      * @param Board $board
@@ -202,6 +207,7 @@ class Possibility
      * @return $this
      */
     public function addPossibility(Possibility $possibility){
+        $possibility->setParent($this);
         $this->possibilities[] = $possibility;
         return $this;
     }
@@ -236,6 +242,7 @@ class Possibility
 
     public function placeMainWord($word, $startRow, $startColumn, $horizontal)
     {
+
         $letters = [];
 
         $currRow = $startRow;
@@ -253,12 +260,18 @@ class Possibility
                 $letters[] = $letter;
 
             }else{
-//                try{
-                    $letter = $this->letterBag->getLetter($char);
-//                } catch (\Exception $exception){
-//                    $this->errors[] = $exception->getMessage();
-//                    continue;
-//                }
+                try{
+                    if($this->turn->isBlank() && $this->turn->getBlankChar() === $char){
+                        $letter = $this->letterBag->getLetter('*');
+                        $letter->setLetter($char);
+                    }else{
+                        $letter = $this->letterBag->getLetter($char);
+                    }
+                } catch (\Exception $e){
+                    $this->errors[] = $e->getMessage();
+                    break;
+                }
+
 
 
                 $this->usedLetters[] = $letter;
@@ -298,6 +311,12 @@ class Possibility
                 $letter->getTile()->setUsedBonus(true);
             }
         }
+
+
+
+        if($this->getTurn()->getPoints() != $this->points){
+            $this->errors[] = 'Zlý počet bodov';
+        }
     }
 
     /**
@@ -327,32 +346,24 @@ class Possibility
             return null;
         }
 
-        // find start of this word first
-        do {
-            if($horizontal){
-                $column--;
-            }else{
-                $row--;
-            }
-            $tile = $this->getBoard()->getTile($row,$column);
-        }while ($tile->hasLetter());
+        while ( $column >= 0 && $row >= 0 && $this->board->getTile($row,$column)->hasLetter() ){
+            $horizontal ? $column-- : $row--;
+        }
 
         $letters = [];
-        //get letters
+
         do{
-            if($horizontal){
-                $column++;
-            }else{
-                $row++;
-            }
-            $tile = $this->getBoard()->getTile($row,$column);
-            if ($tile->hasLetter())
+            $horizontal ? $column++ : $row++;
+            $tile = $this->board->getTile($row,$column);
+            if($tile->hasLetter())
                 $letters[] = $tile->getLetter();
-        }while($tile->hasLetter());
+        }while($tile->hasLetter() && $column < 14 && $row < 14);
 
-
-
-        return new Word($letters);
+        if(count($letters) > 1){
+            return new Word($letters);
+        }else{
+            return null;
+        }
     }
 
 
@@ -367,13 +378,41 @@ class Possibility
             return false;
         }
 
-        if($this->getTurn()->getPoints() != $this->points){
-            return false;
-        }
-
         return true;
     }
 
+
+    public function getObjectHash(){
+        return spl_object_hash($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function removeFromParent($recursive = true)
+    {
+        if($this->parent){
+            $this->parent->remove($this,$recursive);
+        }
+    }
+
+    private function remove(Possibility $possibility, $recursive = true)
+    {
+        foreach ($this->possibilities as $key => $child){
+            if($possibility->getObjectHash() == $child->getObjectHash()){
+                array_splice($this->possibilities, $key, 1);
+            }
+        }
+
+        if ($recursive && count($this->possibilities) === 0){
+            $this->removeFromParent();
+        }
+    }
 
 
 }

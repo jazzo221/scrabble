@@ -1,6 +1,23 @@
 {% extends '@App/layout/layout.html.twig' %}
 
-{% block content %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/js/treant-js-master/Treant.css') }}">
+{% endblock %}
 
-    {% include '@App/Game/possibility.html.twig' %}
+{% block content %}
+    <div>
+        <button class="btn btn-danger" id="show-invalid-btn">Zobraz neplatné možnosti</button>
+    </div>
+    <div>
+        {% include '@App/Game/possibility.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block page_level_javascripts %}
+    <script>
+        $('#show-invalid-btn').click(function(){
+            $('.possibility.invalid').toggleClass('hidden');
+        });
+    </script>
 {% endblock %}

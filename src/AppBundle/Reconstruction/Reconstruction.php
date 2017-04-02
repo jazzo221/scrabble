@@ -86,17 +86,24 @@ class Reconstruction
 
         }else{
             foreach ($possibilities as $possibility){
-                $availableTiles = $this->availableTilesGenerator->generate($possibility->getBoard(),$word);
-//                var_dump($availableTiles);
-//                exit;
-                foreach ($availableTiles as $availableTile){
+                if(mb_strlen($word) > 0){
+                    $availableTiles = $this->availableTilesGenerator->generate($possibility->getBoard(),$word);
+                    foreach ($availableTiles as $availableTile){
 
+                        $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
+                        $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
+                        if($subPossibility->isValid())
+                            $possibility->addPossibility($subPossibility);
+                    }
+                }else{
                     $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-                    try{
+                    $subPossibility->placeMainWord($word,0,0,true);
+                    if($subPossibility->isValid())
+                        $possibility->addPossibility($subPossibility);
+                }
 
-                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
-                    $possibility->addPossibility($subPossibility);
-                    }catch (\Exception $e){}
+                if(count($possibility->getPossibilities()) === 0){
+                    $possibility->removeFromParent();
                 }
             }
         }

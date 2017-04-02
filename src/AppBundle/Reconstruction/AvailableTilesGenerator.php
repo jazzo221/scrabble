@@ -52,8 +52,8 @@ class AvailableTilesGenerator
     private function generateTilesForPosition( array $wordArray, $row, $column){
         $wordLength = count($wordArray);
 
-        if($wordLength + $row < 15
-            && !$this->board->getTile($wordLength+$row,$column)->hasLetter()
+        if($wordLength + $row <= 15
+            && ( $row + $wordLength == 15 || ($row + $wordLength < 15 && !$this->board->getTile($wordLength+$row,$column)->hasLetter()))
             && ( $row -1 < 0 || !$this->board->getTile($row-1,$column)->hasLetter())
         ){
             $isConnected = false;
@@ -75,8 +75,8 @@ class AvailableTilesGenerator
                 $this->addAvailableTile(new AvailableTile($this->board->getTile($row,$column),$row,$column,false));
         }
 
-        if($wordLength + $column < 15
-            && !$this->board->getTile($row,$wordLength+$column)->hasLetter()
+        if($wordLength + $column <= 15
+            && ( $column + $wordLength == 15 || ($column + $wordLength < 15 && !$this->board->getTile($row,$wordLength+$column)->hasLetter()))
             && ( $column -1 < 0 || !$this->board->getTile($row,$column-1)->hasLetter())
         ){
             $isConnected = false;
@@ -94,6 +94,10 @@ class AvailableTilesGenerator
                 }
             }
 
+//            if($row == 2 && $column ==12 && $wordArray[0] == 'Z'){
+//                var_dump($isConnected);
+//                var_dump($matchesLetter);
+//            }
             if($isConnected && $matchesLetter)
                 $this->addAvailableTile(new AvailableTile($this->board->getTile($row,$column),$row,$column,true));
         }
