@@ -1,41 +1,20 @@
-{#{% if possibility.valid %}#}
-<a
-        class="possibility {% if possibility.valid %}text-success valid{% else %}text-warning invalid hidden{% endif %}"
-        data-toggle="collapse"
-        href="#table-{{ possibility.objectHash }}"
-        aria-expanded="false"
-        aria-controls="table-{{ possibility.objectHash }}">
-    Zobraz ťah {{ possibility.turn.number }} možnosť - {% if childNum is defined%}{{ childNum+1 }}{% endif %}
-    <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
-</a>
-<div class="collapse" id="table-{{ possibility.objectHash }}">
-    <div class="panel panel-default {% if possibility.valid %}panel-success{% else %}panel-danger{% endif %}">
-        {#<div class="panel-heading">#}
+{#{% if possibility.isValid %}#}
+<div id="possibility-{{ possibility.objectHash }}">
+    {#<a#}
+            {#class="possibility {% if possibility.isValid %}text-success valid{% else %}text-warning invalid hidden{% endif %}"#}
+            {#data-toggle="collapse"#}
+            {#href="#table-{{ possibility.objectHash }}"#}
+            {#aria-expanded="false"#}
+            {#aria-controls="table-{{ possibility.objectHash }}">#}
         {#Ťah {{ possibility.turn.number }}#}
-        {#<span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>#}
-        {#</div>#}
-        {% if possibility.mainWord %}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Word</th>
-                    <th>Actual</th>
-                    <th>Expected</th>
-                    <th>Errors</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{ possibility.mainWord }}</td>
-                    <td>{{ possibility.points }}</td>
-                    <td>{{ possibility.turn.points }}</td>
-                    <td>{{ possibility.errors|join }}</td>
-                </tr>
-                </tbody>
-            </table>
-        {% endif %}
-        {{ possibility.board.render|raw }}
-    </div>
+        {#možnosť - {% if childNum is defined%}{{ childNum+1 }}{% endif %}#}
+        {#<span class="glyphicon {% if possibility.isValid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>#}
+    {#</a>#}
+    {#{% include '@App/Game/possibility-table.html.twig' with { 'possibility':possibility} %}#}
+    <a href="#modal-{{ possibility.objectHash }}" data-toggle="modal" data-target="#modal-{{ possibility.objectHash }}">
+        Ťah {{ possibility.turn.number }}
+    </a>
+    {% include '@App/Game/possibility-modal.html.twig' with {'possibility':possibility} %}
 </div>
 <ul class="list-unstyled" id="{{ possibility.objectHash }}">
     {% if possibility.possibilities|length > 0 %}

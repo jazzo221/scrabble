@@ -6,18 +6,44 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <button class="btn btn-danger" id="show-invalid-btn">Zobraz neplatné možnosti</button>
-    </div>
-    <div>
-        {% include '@App/Game/possibility.html.twig' %}
+    {#<div>#}
+    {#<button class="btn btn-danger" id="show-invalid-btn">Zobraz neplatné možnosti</button>#}
+    {#</div>#}
+    <div id="treant"></div>
+    <div class="hidden">
+        <div>
+            {% include '@App/Game/possibility.html.twig' %}
+        </div>
     </div>
 {% endblock %}
 
 {% block page_level_javascripts %}
+
+    <script src="{{ asset('bundles/app/js/treant-js-master/vendor/raphael.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/treant-js-master/Treant.js') }}"></script>
+
     <script>
         $('#show-invalid-btn').click(function(){
             $('.possibility.invalid').toggleClass('hidden');
         });
+
+        var data = {{ possibility|serialize|raw }};
+
+        var treantConfig = {
+            chart:{
+                container:'#treant',
+                connectors: {
+                    type: "curve",
+                    style: {
+                        "stroke-width": 2,
+                        "stroke-linecap": "round",
+                        "stroke": "#ccc"
+                    }
+                }
+            },
+            nodeStructure: data
+        };
+
+        var treant = new Treant(treantConfig)
     </script>
 {% endblock %}

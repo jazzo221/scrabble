@@ -13,10 +13,19 @@ use AppBundle\Model\Bag\Bag;
 use AppBundle\Model\Board\Board;
 use AppBundle\Model\Word\Word;
 
+use JMS\Serializer\Annotation as JMS;
+
+/**
+ * Class Possibility
+ * @package AppBundle\Reconstruction
+ *
+ */
 class Possibility
 {
 
     /**
+     * @JMS\Exclude
+     *
      * @var Turn
      */
     private $turn;
@@ -27,6 +36,8 @@ class Possibility
     private $board;
 
     /**
+     * @JMS\Exclude
+     *
      * @var Letter[]
      */
     private $usedLetters;
@@ -47,17 +58,23 @@ class Possibility
     private $points = 0;
 
     /**
+     * @JMS\Exclude
+     *
      * @var Bag
      */
     private $letterBag;
 
     /**
+     * @JMS\Exclude
+     *
      * @var Possibility
      */
     private $parent;
 
     /**
      * @var Possibility[]
+     *
+     * @JMS\SerializedName("children")
      */
     private $possibilities = [];
 
@@ -66,10 +83,40 @@ class Possibility
      */
     private $errors = [];
 
-    /**
-     * @var boolean
-     */
     private $valid;
+
+
+    /**
+     * For Treant
+     *
+     * @JMS\Accessor(getter="getText")
+     *
+     * @var string
+     */
+    private $text;
+
+    public function getText()
+    {
+        return [
+            'name'=> "Ťah ".$this->turn->getNumber()
+        ];
+    }
+
+    /**
+     * For Treant
+     *
+     * @JMS\Accessor(getter="getInnerHTML")
+     * @JMS\SerializedName("innerHTML")
+     *
+     * @var string
+     */
+    private $innerHTML;
+
+    public function getInnerHtml()
+    {
+        return '#possibility-'.$this->getObjectHash();
+    }
+
 
     /**
      * Possibility constructor.

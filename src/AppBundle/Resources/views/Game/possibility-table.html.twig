@@ -1,0 +1,29 @@
+<div class="" id="table-{{ possibility.objectHash }}">
+    <div class="panel panel-default {% if possibility.isValid %}panel-success{% else %}panel-danger{% endif %}">
+        {#<div class="panel-heading">#}
+        {#Ťah {{ possibility.turn.number }}#}
+        {#<span class="glyphicon {% if possibility.isValid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>#}
+        {#</div>#}
+        {% if possibility.mainWord %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Other created words</th>
+                    <th>Actual</th>
+                    <th>Expected</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ possibility.mainWord }}</td>
+                    <td>{{ possibility.createdWords|join(', ') }}</td>
+                    <td>{{ possibility.points }}</td>
+                    <td>{{ possibility.turn.points }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        {{ possibility.board.render|raw }}
+    </div>
+</div>
