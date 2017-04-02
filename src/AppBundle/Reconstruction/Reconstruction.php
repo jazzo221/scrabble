@@ -81,7 +81,8 @@ class Reconstruction
                 $possibility = new Possibility($turn,$board,$bag);
 
                 $possibility->placeMainWord($word,$startTileRow,$column,true);
-                $this->possibility->addPossibility($possibility);
+                if($possibility->isValid())
+                    $this->possibility->addPossibility($possibility);
             }
 
         }else{
@@ -103,7 +104,7 @@ class Reconstruction
                 }
 
                 if(count($possibility->getPossibilities()) === 0){
-//                    $possibility->removeFromParent();
+                    $possibility->removeFromParent();
                 }
             }
         }

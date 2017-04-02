@@ -1,11 +1,11 @@
-{% if possibility.valid %}
+{#{% if possibility.valid %}#}
 <a
         class="possibility {% if possibility.valid %}text-success valid{% else %}text-warning invalid hidden{% endif %}"
         data-toggle="collapse"
         href="#table-{{ possibility.objectHash }}"
         aria-expanded="false"
         aria-controls="table-{{ possibility.objectHash }}">
-    Zobraz ťah {{ possibility.turn.number }} možnosť - {% if childNum is defined%}{{ childNum }}{% endif %}
+    Zobraz ťah {{ possibility.turn.number }} možnosť - {% if childNum is defined%}{{ childNum+1 }}{% endif %}
     <span class="glyphicon {% if possibility.valid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>
 </a>
 <div class="collapse" id="table-{{ possibility.objectHash }}">
@@ -46,5 +46,5 @@
         </li>
     {% endif %}
 </ul>
-{% endif %}
+{#{% endif %}#}
 
