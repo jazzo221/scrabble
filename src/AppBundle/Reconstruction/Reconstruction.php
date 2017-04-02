@@ -103,7 +103,7 @@ class Reconstruction
                 }
 
                 if(count($possibility->getPossibilities()) === 0){
-                    $possibility->removeFromParent();
+//                    $possibility->removeFromParent();
                 }
             }
         }
