@@ -32,6 +32,11 @@ class Reconstruction
     private $availableTilesGenerator;
 
     /**
+     * @var boolean
+     */
+    private $firstWordPlaced;
+
+    /**
      * Reconstruction constructor.
      * @param AvailableTilesGenerator $availableTilesGenerator
      */
@@ -68,21 +73,27 @@ class Reconstruction
         $possibilities = $this->possibility->getRootPossibilitiesForTurn($turn);
         $word = $turn->getWord();
 
-        //check if turn is first
-        if($turn->getNumber() == 1){
+        //check if some word have been already placed
+        if(!$this->firstWordPlaced){
             $startTileRow = 7;
 
             $wordLength = mb_strlen($word);
-            for($i = 1; $i <= $wordLength; $i++){
-                $column = $startTileRow - $wordLength + $i;
 
-                $board = new Board();
-                $bag = clone $this->bag;
-                $possibility = new Possibility($turn,$board,$bag);
+            foreach ($possibilities as $possibility){
+                if($wordLength === 0){
+                    $this->placeEmptyWord($turn,$possibility);
+                }else{
+                    for($i = 1; $i <= $wordLength; $i++){
+                        $column = $startTileRow - $wordLength + $i;
 
-                $possibility->placeMainWord($word,$startTileRow,$column,true);
-                if($possibility->isValid())
-                    $this->possibility->addPossibility($possibility);
+                        $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
+
+                        $subPossibility->placeMainWord($word,$startTileRow,$column,true);
+                        if($subPossibility->isValid())
+                            $possibility->addPossibility($subPossibility);
+                    }
+                    $this->firstWordPlaced = true;
+                }
             }
 
         }else{
@@ -97,10 +108,7 @@ class Reconstruction
                             $possibility->addPossibility($subPossibility);
                     }
                 }else{
-                    $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-                    $subPossibility->placeMainWord($word,0,0,true);
-                    if($subPossibility->isValid())
-                        $possibility->addPossibility($subPossibility);
+                    $this->placeEmptyWord($turn,$possibility);
                 }
 
                 if(count($possibility->getPossibilities()) === 0){
@@ -108,6 +116,13 @@ class Reconstruction
                 }
             }
         }
+    }
+
+    private function placeEmptyWord(Turn $turn, Possibility $possibility){
+        $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
+        $subPossibility->placeMainWord('',0,0,true);
+        if($subPossibility->isValid())
+            $possibility->addPossibility($subPossibility);
     }
 
 }

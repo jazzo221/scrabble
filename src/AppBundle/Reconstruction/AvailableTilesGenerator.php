@@ -35,14 +35,9 @@ class AvailableTilesGenerator
 
         for($row = 0; $row < 15; $row++){
             for($column = 0; $column < 15; $column++){
-                //first return tiles where whole new word can be created
-//                $this->generateTilesForFullWord($word, $row, $column);
                 $this->generateTilesForPosition($wordArray,$row,$column);
             }
         }
-//
-//        var_dump($wordArray);
-//        var_dump($this->availableTiles);
 
         return $this->availableTiles;
 
@@ -94,10 +89,6 @@ class AvailableTilesGenerator
                 }
             }
 
-//            if($row == 2 && $column ==12 && $wordArray[0] == 'Z'){
-//                var_dump($isConnected);
-//                var_dump($matchesLetter);
-//            }
             if($isConnected && $matchesLetter)
                 $this->addAvailableTile(new AvailableTile($this->board->getTile($row,$column),$row,$column,true));
         }
