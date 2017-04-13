@@ -33,11 +33,16 @@ class AvailableTilesGenerator
         $this->board = $board;
         $wordArray = preg_split('//u', $word, null, PREG_SPLIT_NO_EMPTY);
 
-        for($row = 0; $row < 15; $row++){
-            for($column = 0; $column < 15; $column++){
-                $this->generateTilesForPosition($wordArray,$row,$column);
+        if(!$board->getTile(7,7)->hasLetter()){
+            $this->generateFirstWordTiles($wordArray);
+        }else{
+            for($row = 0; $row < 15; $row++){
+                for($column = 0; $column < 15; $column++){
+                    $this->generateTilesForPosition($wordArray,$row,$column);
+                }
             }
         }
+
 
         return $this->availableTiles;
 
@@ -136,5 +141,14 @@ class AvailableTilesGenerator
         }
 
         return false;
+    }
+
+    private function generateFirstWordTiles(array $wordArray)
+    {
+
+        for ($i = 0; $i < count($wordArray); $i++){
+            $currentColumn = 7 - $i;
+            $this->addAvailableTile(new AvailableTile($this->board->getTile(7,$currentColumn),7,$currentColumn,true));
+        }
     }
 }

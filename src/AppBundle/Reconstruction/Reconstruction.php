@@ -32,11 +32,6 @@ class Reconstruction
     private $availableTilesGenerator;
 
     /**
-     * @var boolean
-     */
-    private $firstWordPlaced;
-
-    /**
      * Reconstruction constructor.
      * @param AvailableTilesGenerator $availableTilesGenerator
      */
@@ -73,47 +68,22 @@ class Reconstruction
         $possibilities = $this->possibility->getRootPossibilitiesForTurn($turn);
         $word = $turn->getWord();
 
-        //check if some word have been already placed
-        if(!$this->firstWordPlaced){
-            $startTileRow = 7;
+        foreach ($possibilities as $possibility){
+            if(mb_strlen($word) > 0){
+                $availableTiles = $this->availableTilesGenerator->generate($possibility->getBoard(),$word);
+                foreach ($availableTiles as $availableTile){
 
-            $wordLength = mb_strlen($word);
-
-            foreach ($possibilities as $possibility){
-                if($wordLength === 0){
-                    $this->placeEmptyWord($turn,$possibility);
-                }else{
-                    for($i = 1; $i <= $wordLength; $i++){
-                        $column = $startTileRow - $wordLength + $i;
-
-                        $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-
-                        $subPossibility->placeMainWord($word,$startTileRow,$column,true);
-                        if($subPossibility->isValid())
-                            $possibility->addPossibility($subPossibility);
-                    }
-                    $this->firstWordPlaced = true;
+                    $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
+                    $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
+                    if($subPossibility->isValid())
+                        $possibility->addPossibility($subPossibility);
                 }
+            }else{
+                $this->placeEmptyWord($turn,$possibility);
             }
 
-        }else{
-            foreach ($possibilities as $possibility){
-                if(mb_strlen($word) > 0){
-                    $availableTiles = $this->availableTilesGenerator->generate($possibility->getBoard(),$word);
-                    foreach ($availableTiles as $availableTile){
-
-                        $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-                        $subPossibility->placeMainWord($word,$availableTile->getRow(),$availableTile->getColumn(),$availableTile->isHorizontal());
-                        if($subPossibility->isValid())
-                            $possibility->addPossibility($subPossibility);
-                    }
-                }else{
-                    $this->placeEmptyWord($turn,$possibility);
-                }
-
-                if(count($possibility->getPossibilities()) === 0){
-                    $possibility->removeFromParent();
-                }
+            if(count($possibility->getPossibilities()) === 0){
+                $possibility->removeFromParent();
             }
         }
     }
