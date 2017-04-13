@@ -32,10 +32,13 @@ class TurnType extends AbstractType
             ])
             ->add('word')
             ->add('points')
-            ->add('blank',null,[
-                'label'=>'Žolík'
-            ])
-            ->add('blankChar');
+            ->add('blankChar',TextType::class,[
+                'attr'=>[
+                    'help_text'=>'Ak sa nachadza viacero žolíkov, písmena oddeľte čiarkov'
+                ],
+                'label'=>'Žolík',
+                'required'=>false
+            ]);
     }
 
 

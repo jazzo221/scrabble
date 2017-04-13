@@ -45,21 +45,11 @@ class Turn
     private $points = 0;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="blank", type="boolean", options={"default":false})
-     */
-    private $blank = false;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="blank_char", type="string", length=1, nullable=true)
      *
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 1
-     * )
+     * @Assert\Regex("/^[A-Z](,[A-Z])?$/")
      *
      */
     private $blankChar;
@@ -212,32 +202,9 @@ class Turn
         return $this->scoresheet;
     }
 
-    /**
-     * Set blank
-     *
-     * @param boolean $blank
-     *
-     * @return Turn
-     */
-    public function setBlank($blank)
-    {
-        $this->blank = $blank;
-
-        return $this;
-    }
 
     /**
-     * Get blank
-     *
-     * @return boolean
-     */
-    public function isBlank()
-    {
-        return $this->blank;
-    }
-
-    /**
-     * Set blakChar
+     * Set blankChar
      *
      * @param string $blankChar
      *

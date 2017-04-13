@@ -294,6 +294,8 @@ class Possibility
 
         $currRow = $startRow;
         $currColumn = $startColumn;
+
+        $blankChars = explode(',',$this->turn->getBlankChar());
         foreach (preg_split('//u', $word, null, PREG_SPLIT_NO_EMPTY) as $char){
             $char = mb_strtoupper($char);
             $tile = $this->board->getTile($currRow,$currColumn);
@@ -308,11 +310,17 @@ class Possibility
 
             }else{
                 try{
-                    if($this->turn->isBlank() && $this->turn->getBlankChar() === $char){
-                        $letter = $this->letterBag->getLetter('*');
-                        $letter->setLetter($char);
-                    }else{
-                        $letter = $this->letterBag->getLetter($char);
+
+                    $letter = $this->letterBag->getLetter($char);
+                    //if letter is blank char
+                    if ($letter->getLetter() === '*'){
+                        //get first blank char from array and set it instead of blank char
+                        $blankChar = array_shift($blankChars);
+                        if (!is_null($blankChar)){
+                            $letter->setLetter($blankChar);
+                        }else{
+                            throw new \Exception('Expected character instead of blank char but non is defined');
+                        }
                     }
                 } catch (\Exception $e){
                     $this->errors[] = $e->getMessage();

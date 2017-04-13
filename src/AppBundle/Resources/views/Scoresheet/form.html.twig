@@ -1,5 +1,11 @@
 {% extends '@App/layout/layout.html.twig' %}
 
 {% block content %}
+    <div class="alert alert-info">
+        V prípade ak sa v slove nachádza žolík, nahraďte ho znakom *.
+        Do poľa žolík potom zapíšte písmeno, ktoré tento žolík nahrádza.
+        Ak sa v slove nachádza viac žolíkov, jednotlivé písmena zapíšte v poradí ako sa v slove nachádzajú a oddeľte
+        ich čiarkov. Napríklad: A,Z
+    </div>
     {{ form(form) }}
 {% endblock %}
