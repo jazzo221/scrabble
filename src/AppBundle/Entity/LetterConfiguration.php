@@ -32,7 +32,7 @@ class LetterConfiguration
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Letter", mappedBy="letterConfiguration")
+     * @ORM\OneToMany(targetEntity="Letter", mappedBy="letterConfiguration", ,cascade={"persist"})
      */
     private $letters;
 
