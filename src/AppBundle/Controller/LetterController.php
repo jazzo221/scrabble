@@ -7,8 +7,9 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\Letter;
-use AppBundle\Form\Type\LetterBagType;
+
+use AppBundle\Entity\LetterConfiguration;
+use AppBundle\Form\Type\LetterConfigurationType;
 use AppBundle\Model\Bag\Bag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,37 +23,73 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  *
  * @Route("/letter")
  */
-class LetterController extends Controller
+class LetterController extends BaseController
 {
 
     /**
      * @Route("/")
      * @Template()
      *
-     * @param Request $request
      * @return array
      */
-    public function indexAction(Request $request){
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Letter');
-        $letters = $repo->findAll();
+    public function indexAction(){
+        $repo = $this->getDoctrine()->getRepository('AppBundle:LetterConfiguration');
 
-        $bag = new Bag();
-        $bag->setLetters($letters);
+        return [
+            'configurations' => $repo->findAll()
+        ];
+    }
 
-        $form = $this->createForm(LetterBagType::class,$bag);
-        $form->add('submit',SubmitType::class);
+    /**
+     * @Route("/new")
+     * @Template("@App/Default/form.html.twig")
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function newAction(Request $request)
+    {
+        $configuration = new LetterConfiguration();
+        $form = $this->createForm(LetterConfigurationType::class, $configuration);
+        $this->addSubmit($form);
+
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $entityManager = $this->getDoctrine()->getEntityManager();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($configuration);
+            $manager->flush();
 
-            foreach ($bag->getLetters() as $letter){
-                $entityManager->persist($letter);
-            }
-            $entityManager->flush();
+            $this->addFlash('success','Konfiguracia úspešne uložená');
+            return $this->redirectToRoute('app_letter_edit',['configuration'=>$configuration->getId()]);
         }
 
         return [
-            'form' => $form->createView()
+            'form'=>$form->createView()
+        ];
+
+    }
+
+    /**
+     * @Route("/{configuration}/edit")
+     * @Template("@App/Default/form.html.twig")
+     *
+     * @return array
+     */
+    public function editAction(Request $request, LetterConfiguration $configuration)
+    {
+        $form = $this->createForm(LetterConfigurationType::class, $configuration);
+        $this->addSubmit($form);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($configuration);
+            $manager->flush();
+
+            $this->addFlash('success','Konfiguracia úspešne uložená');
+        }
+
+        return [
+            'form'=>$form->createView()
         ];
     }
 

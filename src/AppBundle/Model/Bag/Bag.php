@@ -50,7 +50,6 @@ class Bag
      * @throws \Exception
      */
     public function getLetter($char){
-        //TODO Letter � not found in bag
         /** @var Letter $letter */
         foreach ($this->letters as $letter){
 //            var_dump($letter)

@@ -45,6 +45,14 @@ class Game
     private $scoresheet;
 
     /**
+     * @var LetterConfiguration
+     *
+     * @ORM\ManyToOne(targetEntity="LetterConfiguration", inversedBy="games")
+     * @ORM\JoinColumn()
+     */
+    private $letterConfiguration;
+
+    /**
      * Game constructor.
      */
     public function __construct()
@@ -146,5 +154,29 @@ class Game
     public function getScoresheet()
     {
         return $this->scoresheet;
+    }
+
+    /**
+     * Set letterConfiguration
+     *
+     * @param \AppBundle\Entity\LetterConfiguration $letterConfiguration
+     *
+     * @return Game
+     */
+    public function setLetterConfiguration(\AppBundle\Entity\LetterConfiguration $letterConfiguration = null)
+    {
+        $this->letterConfiguration = $letterConfiguration;
+
+        return $this;
+    }
+
+    /**
+     * Get letterConfiguration
+     *
+     * @return \AppBundle\Entity\LetterConfiguration
+     */
+    public function getLetterConfiguration()
+    {
+        return $this->letterConfiguration;
     }
 }

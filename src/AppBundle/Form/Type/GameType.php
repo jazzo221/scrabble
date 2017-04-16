@@ -23,10 +23,14 @@ class GameType extends AbstractType
                 'class'=>'AppBundle\Entity\Player',
                 'multiple'=>true,
                 'choice_label'=>'name',
-            ]);
-//            ->add('scoresheet',ScoresheetType::class,[
-//                'data'=>$builder->getData() instanceof Game ? $builder->getData()->getScoresheet() : null
-//            ]);
+            ])
+            ->add('letterConfiguration', EntityType::class,[
+                'class'=>'AppBundle\Entity\LetterConfiguration',
+                'choice_label'=>'name',
+                'required'=>true
+            ])
+        ;
+
 
     }
 

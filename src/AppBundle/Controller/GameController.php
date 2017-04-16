@@ -93,19 +93,11 @@ class GameController extends BaseController
      */
     public function reconstructionAction(Game $game){
 
-        $letters = $this->getDoctrine()->getRepository('AppBundle:Letter')->findAll();
-        $bag = new Bag();
-        $bag->setLetters($letters);
-        $possibility = $this->get('app.reconstruction')->reconstruct($game,$bag);
+        $possibility = $this->get('app.reconstruction')->reconstruct($game);
 
-//        $test= $possibility->getRootPossibilitiesForTurn($this->getDoctrine()->getRepository('AppBundle:Turn')->find(60));
-//
-//        foreach ($test as $item){
-//            var_dump($item->getPossibilities()[0]->getTurn()->getWord());
-//            exit;
-//        }
         return [
-            'possibility'=>$possibility
+            'possibility'=>$possibility,
+            'game'=>$game,
         ];
     }
 }

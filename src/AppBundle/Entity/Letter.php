@@ -7,6 +7,8 @@ use AppBundle\Model\RenderableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use JMS\Serializer\Annotation as JMS;
+
 /**
  * Letter
  *
@@ -27,7 +29,7 @@ class Letter implements RenderableInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="letter", type="string", length=1, unique=true, options={"collation":"utf8_bin"})
+     * @ORM\Column(name="letter", type="string", length=1, unique=false, options={"collation":"utf8_bin"})
      *
      * @Assert\Length(min=1,max=1)
      */
@@ -48,7 +50,18 @@ class Letter implements RenderableInterface
     private $count;
 
     /**
+     * @var LetterConfiguration
+     * @ORM\ManyToOne(targetEntity="LetterConfiguration", inversedBy="letters")
+     * @ORM\JoinColumn()
+     *
+     * @JMS\Exclude
+     */
+    private $letterConfiguration;
+
+    /**
      * @var AbstractTile
+     *
+     * @JMS\Exclude
      */
     private $tile;
 
@@ -168,5 +181,28 @@ class Letter implements RenderableInterface
     {
         return $this->getLetter().'<sub>'.$this->getPoints().'</sub>';
     }
-}
 
+    /**
+     * Set letterConfiguration
+     *
+     * @param \AppBundle\Entity\LetterConfiguration $letterConfiguration
+     *
+     * @return Letter
+     */
+    public function setLetterConfiguration(\AppBundle\Entity\LetterConfiguration $letterConfiguration = null)
+    {
+        $this->letterConfiguration = $letterConfiguration;
+
+        return $this;
+    }
+
+    /**
+     * Get letterConfiguration
+     *
+     * @return \AppBundle\Entity\LetterConfiguration
+     */
+    public function getLetterConfiguration()
+    {
+        return $this->letterConfiguration;
+    }
+}

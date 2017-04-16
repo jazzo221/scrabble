@@ -41,8 +41,10 @@ class Reconstruction
     }
 
 
-    public function reconstruct(Game $game, Bag $bag){
+    public function reconstruct(Game $game){
         $scoresheet = $game->getScoresheet();
+        $bag = new Bag();
+        $bag->setLetters($game->getLetterConfiguration()->getLetters());
         $this->bag = $bag;
         $zeroTurn = new Turn();
         $zeroTurn
