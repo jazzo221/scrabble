@@ -19,7 +19,8 @@ class LetterConfigurationType extends AbstractType
                 'allow_delete'=>true,
                 'attr'=>[
                     'class'=>'form-inline'
-                ]
+                ],
+                'by_reference'=>false
             ]);
     }
 
