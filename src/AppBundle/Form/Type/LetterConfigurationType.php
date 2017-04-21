@@ -20,7 +20,8 @@ class LetterConfigurationType extends AbstractType
                 'attr'=>[
                     'class'=>'form-inline'
                 ],
-                'by_reference'=>false
+                'by_reference'=>false,
+                'label'=>'Písmená'
             ]);
     }
 

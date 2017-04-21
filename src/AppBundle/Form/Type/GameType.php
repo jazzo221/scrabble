@@ -6,9 +6,9 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Entity\Game;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,16 +18,20 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date')
+            ->add('date',DateTimeType::class,[
+                'label'=>'Dátum'
+            ])
             ->add('players',EntityType::class,[
                 'class'=>'AppBundle\Entity\Player',
                 'multiple'=>true,
                 'choice_label'=>'name',
+                'label'=>'Hráči'
             ])
             ->add('letterConfiguration', EntityType::class,[
                 'class'=>'AppBundle\Entity\LetterConfiguration',
                 'choice_label'=>'name',
-                'required'=>true
+                'required'=>true,
+                'label'=>'Konfigurácia'
             ])
         ;
 

@@ -21,19 +21,22 @@ class LetterType extends AbstractType
     {
 
         $builder->add('letter',TextType::class,[
-            'disabled'=> false
+            'disabled'=> false,
+            'label'=>'Písmeno'
         ])
             ->add('points',NumberType::class,[
                 'attr'=>[
                     'min'=>0,
                     'max'=>10
-                ]
+                ],
+                'label'=>'Body'
             ])
             ->add('count',NumberType::class,[
                 'attr'=>[
                     'min'=>0,
                     'max'=>10
-                ]
+                ],
+                'label'=>'Počet'
             ]);
     }
 

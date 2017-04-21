@@ -19,8 +19,7 @@ class ScoresheetType extends AbstractType
     {
 
         $data = $builder->getData();
-//        var_dump($data);
-//        exit;
+
         $builder
             ->add('turns',CollectionType::class,[
             'allow_add'=>true,

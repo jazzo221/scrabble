@@ -24,14 +24,20 @@ class TurnType extends AbstractType
                 'attr'=>[
                     'readonly'=>true,
                     'class'=>'turn'
-                ]
+                ],
+                'label'=>'Ťah'
             ])
             ->add('player',EntityType::class,[
                 'class'=>'AppBundle\Entity\Player',
-                'choices'=> $options['players']
+                'choices'=> $options['players'],
+                'label'=>'Hráč'
             ])
-            ->add('word')
-            ->add('points')
+            ->add('word',TextType::class,[
+                'label'=>'Hlavné slovo'
+            ])
+            ->add('points',NumberType::class,[
+                'label'=>'Počet bodov'
+            ])
             ->add('blankChar',TextType::class,[
                 'attr'=>[
                     'help_text'=>'Ak sa nachadza viacero žolíkov, písmena oddeľte čiarkov'
