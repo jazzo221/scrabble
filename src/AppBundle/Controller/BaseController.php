@@ -19,7 +19,9 @@ class BaseController extends Controller
      * @return FormInterface
      */
     protected function addSubmit(FormInterface $form){
-        $form->add('submit',SubmitType::class);
+        $form->add('submit',SubmitType::class,[
+            'label'=>'Uložiť'
+        ]);
 
         return $form;
     }
