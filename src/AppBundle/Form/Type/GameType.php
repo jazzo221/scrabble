@@ -19,7 +19,8 @@ class GameType extends AbstractType
     {
         $builder
             ->add('date',DateTimeType::class,[
-                'label'=>'Dátum'
+                'label'=>'Dátum',
+                'data'=>new \DateTime()
             ])
             ->add('players',EntityType::class,[
                 'class'=>'AppBundle\Entity\Player',

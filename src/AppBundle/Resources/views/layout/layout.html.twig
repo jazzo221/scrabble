@@ -4,8 +4,8 @@
     {% block metatags %}
         <meta charset="UTF-8"/>
         <title>{% block title %}Scrabble{% endblock %}</title>
-        <meta name="author" content="ATENA - PERSONAL CONSULTING s.r.o."/>
-        <meta name="copyright" content="ATENA - PERSONAL CONSULTING s.r.o."/>
+        <meta name="author" content="Jakub Jeziorski"/>
+        <meta name="copyright" content="Jakub Jeziorski"/>
     {% endblock %}
 
     {% block stylesheets %}
@@ -41,9 +41,6 @@
     {% block global_plugin_javascripts %}
     {% javascripts '@bootstrap_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    {% javascripts '@symfony_collection_js' %}
-    <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% endblock %}
     {% block page_level_javascripts %}{% endblock %}
