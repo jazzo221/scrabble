@@ -41,8 +41,18 @@ class Reconstruction
     }
 
 
+    /**
+     * Performs reconstruction of provided Game.
+     *
+     * @param Game $game The game to reconstruct
+     * @return Possibility root node for possibility tree
+     */
     public function reconstruct(Game $game){
         $scoresheet = $game->getScoresheet();
+        if(!$scoresheet instanceof Scoresheet){
+            throw new \BadMethodCallException("Game has to have scoresheet to reconstruct");
+        }
+
         $bag = new Bag();
         $bag->setLetters($game->getLetterConfiguration()->getLetters());
         $this->bag = $bag;
@@ -52,12 +62,6 @@ class Reconstruction
             ->setNumber(0);
         $this->possibility = new Possibility($zeroTurn,new Board(),$bag);
 
-        if(!$scoresheet instanceof Scoresheet){
-            throw new \BadMethodCallException("Game has to have scoresheet to reconstruct");
-        }
-
-
-
         foreach ($scoresheet->getTurns() as $turn){
             $this->getPossibilities($turn);
         }
@@ -65,6 +69,11 @@ class Reconstruction
         return $this->possibility;
     }
 
+    /**
+     * Main method witch generates new possibilities for our tree
+     *
+     * @param Turn $turn
+     */
     private function getPossibilities(Turn $turn){
 
         $possibilities = $this->possibility->getRootPossibilitiesForTurn($turn);
@@ -90,11 +99,15 @@ class Reconstruction
         }
     }
 
+    /**
+     * Adds empty word possibility to node
+     *
+     * @param Turn $turn
+     * @param Possibility $possibility
+     */
     private function placeEmptyWord(Turn $turn, Possibility $possibility){
         $subPossibility = new Possibility($turn,$possibility->getBoard(),$possibility->getLetterBag());
-        $subPossibility->placeMainWord('',0,0,true);
-        if($subPossibility->isValid())
-            $possibility->addPossibility($subPossibility);
+        $possibility->addPossibility($subPossibility);
     }
 
 }

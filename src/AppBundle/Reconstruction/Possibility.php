@@ -261,12 +261,12 @@ class Possibility
 
     /**
      * @param Turn $turn
+     * @param array $possibilities
      * @return Possibility[]
      */
     public function getRootPossibilitiesForTurn(Turn $turn, $possibilities = []){
 
         if($this->turn->getNumber() === $turn->getNumber() -1 && $this->isValid()){
-//            var_dump($this);
             return [$this];
         }else{
 
@@ -347,6 +347,10 @@ class Possibility
             }
         }
 
+        if(count($this->usedLetters) > 7){
+            $this->errors[] = 'Bolo použitých viac ako 7 kameňov';
+        }
+
         $this->mainWord = new Word($letters);
         $this->points += $this->mainWord->getActualPoints();
         foreach ($this->createdWords as $createdWord){
@@ -366,8 +370,6 @@ class Possibility
                 $letter->getTile()->setUsedBonus(true);
             }
         }
-
-
 
         if($this->getTurn()->getPoints() != $this->points){
             $this->errors[] = 'Zlý počet bodov';

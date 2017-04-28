@@ -23,7 +23,7 @@ class TripleLetterBonus extends AbstractTile
      */
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter->render() : "3x Letter";
+        $content = $this->hasLetter() ? $this->letter->render() : "3x Písmeno";
         return "<td class='tile triple-letter-bonus'>".$content."</td>";
     }
 }

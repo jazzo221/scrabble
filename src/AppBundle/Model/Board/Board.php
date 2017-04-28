@@ -31,6 +31,9 @@ class Board implements RenderableInterface
         $this->buildBoard();
     }
 
+    /**
+     * clones Board object and all its tiles
+     */
     function __clone()
     {
         foreach ($this->board as $rowKey => $row){

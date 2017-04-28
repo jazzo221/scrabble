@@ -4,26 +4,27 @@
         {#Ťah {{ possibility.turn.number }}#}
         {#<span class="glyphicon {% if possibility.isValid %}glyphicon-ok{% else %}glyphicon-remove{% endif %}"></span>#}
         {#</div>#}
-        {% if possibility.mainWord %}
+
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Word</th>
-                    <th>Other created words</th>
-                    <th>Actual</th>
-                    <th>Expected</th>
+                    <th>Ťah</th>
+                    <th>Hlavné slovo</th>
+                    <th>Ostatné slová</th>
+                    <th>Použité písmená</th>
+                    <th>Počet bodov</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
+                    <td>{{ possibility.turn.number }}</td>
                     <td>{{ possibility.mainWord }}</td>
                     <td>{{ possibility.createdWords|join(', ') }}</td>
-                    <td>{{ possibility.points }}</td>
+                    <td>{{ possibility.usedLetters|join(', ') }}</td>
                     <td>{{ possibility.turn.points }}</td>
                 </tr>
                 </tbody>
             </table>
-        {% endif %}
         {{ possibility.board.render|raw }}
     </div>
 </div>

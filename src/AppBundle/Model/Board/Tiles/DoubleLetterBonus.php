@@ -19,7 +19,7 @@ class DoubleLetterBonus extends AbstractTile
 
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter->render() : "2x Letter";
+        $content = $this->hasLetter() ? $this->letter->render() : "2x Písmeno";
 
         return "<td class='tile double-letter-bonus'>".$content."</td>";
     }

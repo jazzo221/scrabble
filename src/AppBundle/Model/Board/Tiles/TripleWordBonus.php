@@ -14,7 +14,7 @@ class TripleWordBonus extends AbstractWordBonus
      */
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter->render() : "3x Word";
+        $content = $this->hasLetter() ? $this->letter->render() : "3x Slovo";
         return "<td class='tile triple-word-bonus'>".$content."</td>";
     }
 

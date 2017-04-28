@@ -51,6 +51,8 @@ class Word
     }
 
     /**
+     * Word score without any bonuses
+     *
      * @return int
      */
     public function getCleanPoints()
@@ -59,6 +61,8 @@ class Word
     }
 
     /**
+     * Word score after bonuses
+     *
      * @return int
      */
     public function getActualPoints()

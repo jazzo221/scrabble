@@ -12,7 +12,7 @@ class DoubleWordBonus extends AbstractWordBonus
 
     public function render()
     {
-        $content = $this->hasLetter() ? $this->letter->render() : "2x Word";
+        $content = $this->hasLetter() ? $this->letter->render() : "2x Slovo";
         return "<td class='tile double-word-bonus'>".$content."</td>";
     }
 

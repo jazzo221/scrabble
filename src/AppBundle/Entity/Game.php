@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Game
@@ -31,6 +32,8 @@ class Game
 
     /**
      * @var ArrayCollection
+     *
+     * @Assert\Count(min=1)
      *
      * @ORM\ManyToMany(targetEntity="Player", inversedBy="games")
      * @ORM\JoinTable()
